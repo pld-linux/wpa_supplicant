@@ -26,6 +26,20 @@ that is used in the client stations. It implements key negotiation
 with a WPA Authenticator and it controls the roaming and IEEE 802.11
 authentication/association of the wlan driver.
 
+wpa_supplicant is designed to be a "daemon" program that runs in the
+background and acts as the backend component controlling the wireless
+connection. Support for separate frontend programs is included and an
+example text-based frontend, wpa_cli, is included with wpa_supplicant.
+
+Supported WPA/IEEE 802.11i features:
+- WPA-PSK ("WPA-Personal")
+- WPA with EAP (e.g., with RADIUS authentication server) ("WPA-Enterprise")
+(currently, EAP-TLS and EAP-PEAP/MSCHAPv2 are supported with an integrated
+IEEE 802.1X Supplicant;
+other EAP types may be used with an external program, Xsupplicant)
+- key management for CCMP, TKIP, WEP104, WEP40
+- RSN/WPA2 (IEEE 802.11i)
+
 #%description -l pl
 # write me
 
