@@ -1,6 +1,6 @@
 # TODO:
-# - init script or supporin rc-scripts
-# - pl descrition (and propable better en one)
+# - optflags
+# - init script or support in rc-scripts
 # - separate cli, check BRs/Rs
 #
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
@@ -33,15 +33,34 @@ example text-based frontend, wpa_cli, is included with wpa_supplicant.
 
 Supported WPA/IEEE 802.11i features:
 - WPA-PSK ("WPA-Personal")
-- WPA with EAP (e.g., with RADIUS authentication server) ("WPA-Enterprise")
-(currently, EAP-TLS and EAP-PEAP/MSCHAPv2 are supported with an integrated
-IEEE 802.1X Supplicant;
-other EAP types may be used with an external program, Xsupplicant)
+- WPA with EAP (e.g., with RADIUS authentication server)
+  ("WPA-Enterprise") (currently, EAP-TLS and EAP-PEAP/MSCHAPv2 are
+  supported with an integrated IEEE 802.1X Supplicant; other EAP types
+  may be used with an external program, Xsupplicant)
 - key management for CCMP, TKIP, WEP104, WEP40
 - RSN/WPA2 (IEEE 802.11i)
 
-#%description -l pl
-# write me
+%description -l pl
+wpa_supplicant to suplikant WPA z obs³ug± WPA oraz WPA2 (IEEE 802.11i
+/ RSN). Suplikant to element IEEE 802.1X/WPA u¿ywany na stacjach
+klienckich. Implementuje negocjacjê kluczy z elementem
+uwierzytelniaj±cym WPA (WPA Authenticator) i kontroluje roaming oraz
+uwierzytelnianie/kojarzenie sterownika wlan zgodnie z IEEE 802.11.
+
+wpa_supplicant jest zaprojektowany tak, by by³ wspólnym programem
+dzia³aj±cym w tle i dzia³a jako element backendu steruj±cy po³±czeniem
+bezprzewodowym. Dostêpna jest obs³uga oddzielnych programów
+frontendowych, a w pakiecie wpa_supplicant za³±czony jest prosty
+frontend tekstowy - wpa_cli.
+
+Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
+- WPA-PSK ("WPA-Personal")
+- WPA z EAP (np. z serwerem uwierzytleniaj±cym RADIUS)
+  ("WPA-Enterprise") (aktualnie EAP-TLS i EAP-PEAP/MSCHAPv2 s±
+  obs³ugiwane przez za³±czonego suplikanta IEEE 802.1X; inne rodzaje
+  EAP mog± byæ u¿ywane przez zewnêtrzny program - Xsupplicant)
+- zarz±dzanie kluczy dla CCMP, TKIP, WEP104, WEP40
+- RSN/WPA2 (IEEE 802.11i)
 
 %prep
 %setup -q
