@@ -3,25 +3,19 @@
 # - init script or support in rc-scripts
 # - separate cli, check BRs/Rs
 #
-%define		mad_snap_year	2005
-%define		mad_snap_month	06
-%define		mad_snap_day	26
-%define		mad_snap	%{mad_snap_year}%{mad_snap_month}%{mad_snap_day}
-%define		mad_snapdate	%{mad_snap_year}-%{mad_snap_month}-%{mad_snap_day}
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.4.3
-Release:	0.1
+Release:	0.2
 License:	GPL v2
 Group:		Networking 
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	ebcdf680d9092afa9f6249171d2387ca
 Source1:	%{name}.config
-Source2:	http://madwifi.otaku42.de/%{mad_snap_year}/%{mad_snap_month}/madwifi-cvs-snapshot-%{mad_snapdate}.tar.bz2
-# Source2-md5:	0853408b1ae8c4741547cda4d58cd4df
 Patch0:		%{name}-makefile.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
+BuildRequires:	madwifi-devel
 BuildRequires:	openssl-devel
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -74,7 +68,6 @@ Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
 %patch0 -p1
 
 install %{SOURCE1} .config
-tar xjf %{SOURCE2}
 
 %build
 %{__make}
