@@ -6,12 +6,12 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	0.4.3
-Release:	0.2
+Version:	0.4.4
+Release:	0.1
 License:	GPL v2
 Group:		Networking 
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	ebcdf680d9092afa9f6249171d2387ca
+# Source0-md5:	29c70c9ee0891072db413459cdac2e18
 Source1:	%{name}.config
 Patch0:		%{name}-makefile.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
