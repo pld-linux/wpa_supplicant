@@ -1,21 +1,17 @@
-# TODO:
-# - optflags
-# - init script or support in rc-scripts
-# - separate cli, check BRs/Rs
-#
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	0.4.4
-Release:	0.1
+Version:	0.4.5
+Release:	1
 License:	GPL v2
 Group:		Networking 
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	29c70c9ee0891072db413459cdac2e18
+# Source0-md5:	28347563119f09fc963bcdf9d16265a3
 Source1:	%{name}.config
 Patch0:		%{name}-makefile.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 BuildRequires:	madwifi-devel
+BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -66,11 +62,14 @@ Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
 %prep
 %setup -q
 %patch0 -p1
+sed -i -e 's#-O2#$(OPT)#g' Makefile
 
 install %{SOURCE1} .config
 
 %build
-%{__make}
+%{__make} \
+	CC="%{__cc}" \
+	OPT="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
