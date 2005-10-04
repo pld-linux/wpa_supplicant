@@ -1,3 +1,10 @@
+%bcond_without	madfiwi
+
+# sync archlist with madwifi.spec
+%ifnarch %{x8664} arm %{ix86} mips ppc xscale
+%undefine	with_madwifi
+%endif
+
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
@@ -10,7 +17,7 @@ Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
 Source1:	%{name}.config
 Patch0:		%{name}-makefile.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
-BuildRequires:	madwifi-devel
+%{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 BuildRequires:	readline-devel
@@ -65,6 +72,10 @@ Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
 sed -i -e 's#-O2#$(OPT)#g' Makefile
 
 install %{SOURCE1} .config
+
+%if %{with madwifi}
+echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
+%endif
 
 %build
 %{__make} \
