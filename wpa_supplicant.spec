@@ -1,4 +1,7 @@
-%bcond_without	madfiwi
+#
+# Conditional build
+%bcond_without	madfiwi	# without madwifi support
+#
 
 # sync archlist with madwifi.spec
 %ifnarch %{x8664} arm %{ix86} mips ppc xscale
