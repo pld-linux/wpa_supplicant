@@ -1,7 +1,6 @@
 #
 # Conditional build
-%bcond_without	madfiwi	# without madwifi support
-#
+%bcond_without	madwifi		# without madwifi support
 
 # sync archlist with madwifi.spec
 %ifnarch %{x8664} arm %{ix86} mips ppc xscale
@@ -12,7 +11,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.4.5
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Networking 
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
