@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=wpa_gui
+Comment=WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
+Comment[pl]=Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X
+Icon=wpa_gui.xpm
+Exec=wpa_gui
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Categories=System;
+# vi: encoding=utf-8
