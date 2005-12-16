@@ -1,6 +1,11 @@
+# TODO:
+# - wpa_gui can be build with qt4 - bcond?
+# - tls extension is in sources - maybe to use it?
+# - icon and desktop for wpa_gui
 #
 # Conditional build
-%bcond_without	madwifi		# without madwifi support
+%bcond_with	madwifi		# with madwifi support (enable it by default
+				# if madwifi will be on ftp...)
 #
 # sync archlist with madwifi.spec
 %ifnarch %{x8664} arm %{ix86} mips ppc xscale
@@ -11,7 +16,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.4.7
-Release:	1
+Release:	1.1
 License:	GPL v2
 Group:		Networking 
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -22,6 +27,7 @@ URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
+BuildRequires:	qmake
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -68,6 +74,15 @@ Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
 - zarz±dzanie kluczy dla CCMP, TKIP, WEP104, WEP40
 - RSN/WPA2 (IEEE 802.11i)
 
+%package -n wpa_gui
+Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
+Summary(pl):	Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
+Group:		X11/Applications/Networking
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description -n wpa_gui
+Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
+
 %prep
 %setup -q
 %patch0 -p1
@@ -84,15 +99,23 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 	CC="%{__cc}" \
 	OPT="%{rpmcflags}"
 
+%{__make} wpa_gui \
+	QTDIR=/usr \
+	UIC=%{_bindir}/uic \
+	CC="%{__cc}" \
+	OPT="%{rpmcflags}"
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_mandir}/man{5,8}
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+
+install wpa_gui/wpa_gui $RPM_BUILD_ROOT%{_bindir} 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -103,3 +126,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_sbindir}/*
 %{_mandir}/man[58]/*
+
+%files -n wpa_gui
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/wpa_gui
