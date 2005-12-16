@@ -79,10 +79,13 @@ Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
 Summary(pl):	Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Group:		X11/Applications/Networking
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description -n wpa_gui
-Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
+Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI.
+
+%description -n wpa_gui -l pl
+Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 
 %prep
 %setup -q
