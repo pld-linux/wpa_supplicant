@@ -1,7 +1,7 @@
 # TODO:
 # - wpa_gui can be build with qt4 - bcond?
 # - tls extension is in sources - maybe to use it?
-# - icon and desktop for wpa_gui
+# - icon for wpa_gui
 #
 # Conditional build
 %bcond_with	madwifi		# with madwifi support (enable it by default
@@ -16,12 +16,13 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.4.7
-Release:	1.1
+Release:	1.9
 License:	GPL v2
 Group:		Networking 
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	1345730f15d5f93f2f083096ddc903eb
 Source1:	%{name}.config
+Source2:	%{name}-wpa_gui.desktop
 Patch0:		%{name}-makefile.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_madwifi:BuildRequires:	madwifi-devel}
@@ -107,7 +108,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir}}
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -116,6 +117,7 @@ install doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 install wpa_gui/wpa_gui $RPM_BUILD_ROOT%{_bindir} 
+install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -130,3 +132,4 @@ rm -rf $RPM_BUILD_ROOT
 %files -n wpa_gui
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wpa_gui
+%{_desktopdir}/wpa_gui.desktop
