@@ -30,6 +30,7 @@ URL:		http://hostap.epitest.fi/wpa_supplicant/
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 BuildRequires:	qmake
+BuildRequires:	qt-devel
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
