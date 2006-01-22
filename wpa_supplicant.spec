@@ -121,7 +121,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir}}
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir},/var/run/%{name}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -142,6 +142,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog README eap_testing.txt todo.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_sbindir}/*
+%attr(750,root,root) %dir /var/run/%{name}
 %{_mandir}/man[58]/*
 
 %if %{with gui}
