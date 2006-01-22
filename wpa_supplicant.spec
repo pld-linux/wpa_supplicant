@@ -6,6 +6,7 @@
 # Conditional build
 %bcond_with	madwifi		# with madwifi support (enable it by default
 				# if madwifi will be on ftp...)
+%bcond_without	gui		# without gui
 #
 # sync archlist with madwifi.spec
 %ifnarch %{x8664} arm %{ix86} mips ppc xscale
@@ -29,8 +30,10 @@ URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
+%if %{with gui}
 BuildRequires:	qmake
 BuildRequires:	qt-devel
+%endif
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -77,6 +80,7 @@ Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
 - zarz±dzanie kluczy dla CCMP, TKIP, WEP104, WEP40
 - RSN/WPA2 (IEEE 802.11i)
 
+%if %{with gui}
 %package -n wpa_gui
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
 Summary(pl):	Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
@@ -88,6 +92,7 @@ Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI.
 
 %description -n wpa_gui -l pl
 Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
+%endif
 
 %prep
 %setup -q
@@ -106,11 +111,13 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 	CC="%{__cc}" \
 	OPT="%{rpmcflags}"
 
+%if %{with gui}
 %{__make} wpa_gui \
 	QTDIR=/usr \
 	UIC=%{_bindir}/uic \
 	CC="%{__cc}" \
 	OPT="%{rpmcflags}"
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -122,8 +129,10 @@ install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir}}
 install doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
+%if %{with gui}
 install wpa_gui/wpa_gui $RPM_BUILD_ROOT%{_bindir} 
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -135,7 +144,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/*
 %{_mandir}/man[58]/*
 
+%if %{with gui}
 %files -n wpa_gui
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wpa_gui
 %{_desktopdir}/wpa_gui.desktop
+%endif
