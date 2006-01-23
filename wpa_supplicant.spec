@@ -6,7 +6,7 @@
 # Conditional build
 %bcond_with	madwifi		# with madwifi support (enable it by default
 				# if madwifi will be on ftp...)
-%bcond_without	gui		# without gui
+%bcond_without	gui		# don't build gui
 #
 # sync archlist with madwifi.spec
 %ifnarch %{x8664} arm %{ix86} mips ppc xscale
@@ -80,7 +80,6 @@ Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
 - zarz±dzanie kluczy dla CCMP, TKIP, WEP104, WEP40
 - RSN/WPA2 (IEEE 802.11i)
 
-%if %{with gui}
 %package -n wpa_gui
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
 Summary(pl):	Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
@@ -92,7 +91,6 @@ Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI.
 
 %description -n wpa_gui -l pl
 Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
-%endif
 
 %prep
 %setup -q
