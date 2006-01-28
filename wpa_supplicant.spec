@@ -114,6 +114,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 	QTDIR=/usr \
 	UIC=%{_bindir}/uic \
 	CC="%{__cc}" \
+	CXX="%{__cxx}" \
 	OPT="%{rpmcflags}"
 %endif
 
