@@ -23,8 +23,6 @@ Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	a73b5b1be3f20f3e2c4d325f0a7a38e4
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
-Source3:	%{name}.init
-Source4:	%{name}.sysconfig
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-0.4.7_dscape-02.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
@@ -36,8 +34,6 @@ BuildRequires:	qmake
 BuildRequires:	qt-devel
 %endif
 BuildRequires:	readline-devel
-Requires(post,preun):	/sbin/chkconfig
-Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -123,17 +119,12 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir},/var/run/%{name}} \
-	$RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
-
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir},/var/run/%{name}}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
-
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 %if %{with gui}
 install wpa_gui/wpa_gui $RPM_BUILD_ROOT%{_bindir}
@@ -143,21 +134,10 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-/sbin/chkconfig --add %{name}
-
-%preun
-if [ "$1" = "0" ]; then
-	%service %{name} stop
-	/sbin/chkconfig --del %{name}
-fi
-
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog README eap_testing.txt todo.txt
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
-%attr(754,root,root) /etc/rc.d/init.d/%{name}
-%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %attr(755,root,root) %{_sbindir}/*
 %attr(750,root,root) %dir /var/run/%{name}
 %{_mandir}/man[58]/*

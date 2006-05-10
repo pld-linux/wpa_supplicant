@@ -1,9 +1,0 @@
-# wpa_supplicant config
-#
-# interfaces wpa_supplicant should listen on
-# INTERFACES="wlan0"
-
-# drivers to use
-# possible values: atmel dscape hostap ipw ndiswrapper prism54 wext
-# and optionally madwifi (if compiled with madwifi support)
-# DRIVERS="ndiswrapper prism"
