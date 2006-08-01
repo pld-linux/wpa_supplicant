@@ -15,12 +15,12 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	0.5.2
-Release:	2
+Version:	0.5.4
+Release:	1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	a73b5b1be3f20f3e2c4d325f0a7a38e4
+# Source0-md5:	eaf78fa5dde04ee20e718a8e94eed827
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Patch0:		%{name}-makefile.patch
@@ -34,6 +34,7 @@ BuildRequires:	qmake
 BuildRequires:	qt-devel
 %endif
 BuildRequires:	readline-devel
+BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -95,7 +96,9 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-sed -i -e 's#-O2#$(OPT)#g' Makefile
+sed -e 's#-O2#$(OPT)#g' \
+	-e '/ALL/s/dynamic_eap_methods//' \
+	-i Makefile
 
 install %{SOURCE1} .config
 
