@@ -109,6 +109,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 %build
 %{__make} \
 	CC="%{__cc}" \
+	LDFLAGS="%{rpmldflags}" \
 	OPT="%{rpmcflags}"
 
 %if %{with gui}
@@ -117,6 +118,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 	UIC=%{_bindir}/uic \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
+	LDFLAGS="%{rpmldflags}" \
 	OPT="%{rpmcflags}"
 %endif
 
