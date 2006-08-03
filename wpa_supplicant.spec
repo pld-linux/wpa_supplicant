@@ -25,6 +25,8 @@ Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-0.4.7_dscape-02.patch
+Patch2:		%{name}-OPTCFLAGS.patch
+Patch3:		%{name}-kill-dynamic_eap_methods.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
@@ -34,7 +36,6 @@ BuildRequires:	qmake
 BuildRequires:	qt-devel
 %endif
 BuildRequires:	readline-devel
-BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -96,9 +97,8 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-sed -e 's#-O2#$(OPT)#g' \
-	-e '/ALL/s/dynamic_eap_methods//' \
-	-i Makefile
+%patch2 -p1
+%patch3 -p1
 
 install %{SOURCE1} .config
 
@@ -110,7 +110,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 %{__make} \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
-	OPT="%{rpmcflags}"
+	OPTCFLAGS="%{rpmcflags}"
 
 %if %{with gui}
 %{__make} wpa_gui \
@@ -119,7 +119,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
 	LDFLAGS="%{rpmldflags}" \
-	OPT="%{rpmcflags}"
+	OPTCFLAGS="%{rpmcflags}"
 %endif
 
 %install
