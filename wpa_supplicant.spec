@@ -2,6 +2,8 @@
 # - wpa_gui can be built with qt4 - bcond?
 # - icon for wpa_gui
 # - reverse madwifi bcond when appropriate packages will be available on ftp
+#	/ as of madwifi-ng > r1499 and kernel > 2.6.14 wext driver could be 
+#	used instead of madwifi - so madwifi bcond will become obsolete soon /
 #
 # Conditional build
 %bcond_with	madwifi		# with madwifi support
