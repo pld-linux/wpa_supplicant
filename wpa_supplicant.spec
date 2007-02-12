@@ -15,7 +15,7 @@
 %endif
 #
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
-Summary(pl.UTF-8):   Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
+Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.5.7
 Release:	1
@@ -85,7 +85,7 @@ Obsługiwane możliwości WPA/IEEE 802.11i:
 
 %package -n wpa_gui
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
-Summary(pl.UTF-8):   Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
+Summary(pl.UTF-8):	Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Group:		X11/Applications/Networking
 Requires:	%{name} = %{version}-%{release}
 
