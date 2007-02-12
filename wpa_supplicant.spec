@@ -15,7 +15,7 @@
 %endif
 #
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
-Summary(pl):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
+Summary(pl.UTF-8):   Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.5.7
 Release:	1
@@ -61,38 +61,38 @@ Supported WPA/IEEE 802.11i features:
 - key management for CCMP, TKIP, WEP104, WEP40
 - RSN/WPA2 (IEEE 802.11i)
 
-%description -l pl
-wpa_supplicant to suplikant WPA z obs³ug± WPA oraz WPA2 (IEEE 802.11i
-/ RSN). Suplikant to element IEEE 802.1X/WPA u¿ywany na stacjach
-klienckich. Implementuje negocjacjê kluczy z elementem
-uwierzytelniaj±cym WPA (WPA Authenticator) i kontroluje roaming oraz
+%description -l pl.UTF-8
+wpa_supplicant to suplikant WPA z obsÅ‚ugÄ… WPA oraz WPA2 (IEEE 802.11i
+/ RSN). Suplikant to element IEEE 802.1X/WPA uÅ¼ywany na stacjach
+klienckich. Implementuje negocjacjÄ™ kluczy z elementem
+uwierzytelniajÄ…cym WPA (WPA Authenticator) i kontroluje roaming oraz
 uwierzytelnianie/kojarzenie sterownika wlan zgodnie z IEEE 802.11.
 
-wpa_supplicant jest zaprojektowany tak, by by³ wspólnym programem
-dzia³aj±cym w tle i dzia³a jako element backendu steruj±cy po³±czeniem
-bezprzewodowym. Dostêpna jest obs³uga oddzielnych programów
-frontendowych, a w pakiecie wpa_supplicant za³±czony jest prosty
+wpa_supplicant jest zaprojektowany tak, by byÅ‚ wspÃ³lnym programem
+dziaÅ‚ajÄ…cym w tle i dziaÅ‚a jako element backendu sterujÄ…cy poÅ‚Ä…czeniem
+bezprzewodowym. DostÄ™pna jest obsÅ‚uga oddzielnych programÃ³w
+frontendowych, a w pakiecie wpa_supplicant zaÅ‚Ä…czony jest prosty
 frontend tekstowy - wpa_cli.
 
-Obs³ugiwane mo¿liwo¶ci WPA/IEEE 802.11i:
+ObsÅ‚ugiwane moÅ¼liwoÅ›ci WPA/IEEE 802.11i:
 - WPA-PSK ("WPA-Personal")
-- WPA z EAP (np. z serwerem uwierzytleniaj±cym RADIUS)
-  ("WPA-Enterprise") (aktualnie EAP-TLS i EAP-PEAP/MSCHAPv2 s±
-  obs³ugiwane przez za³±czonego suplikanta IEEE 802.1X; inne rodzaje EAP
-  mog± byæ u¿ywane przez zewnêtrzny program - Xsupplicant)
-- zarz±dzanie kluczy dla CCMP, TKIP, WEP104, WEP40
+- WPA z EAP (np. z serwerem uwierzytleniajÄ…cym RADIUS)
+  ("WPA-Enterprise") (aktualnie EAP-TLS i EAP-PEAP/MSCHAPv2 sÄ…
+  obsÅ‚ugiwane przez zaÅ‚Ä…czonego suplikanta IEEE 802.1X; inne rodzaje EAP
+  mogÄ… byÄ‡ uÅ¼ywane przez zewnÄ™trzny program - Xsupplicant)
+- zarzÄ…dzanie kluczy dla CCMP, TKIP, WEP104, WEP40
 - RSN/WPA2 (IEEE 802.11i)
 
 %package -n wpa_gui
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
-Summary(pl):	Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
+Summary(pl.UTF-8):   Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Group:		X11/Applications/Networking
 Requires:	%{name} = %{version}-%{release}
 
 %description -n wpa_gui
 Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI.
 
-%description -n wpa_gui -l pl
+%description -n wpa_gui -l pl.UTF-8
 Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 
 %prep
