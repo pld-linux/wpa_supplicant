@@ -17,18 +17,17 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	0.5.7
-Release:	2
+Version:	0.5.8
+Release:	1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	bd2436392ad3c6d2513da701a12f2d27
+# Source0-md5:	7bb22f2bcdeed54b3fb5407d6d8bc9bb
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-0.4.7_dscape-02.patch
 Patch2:		%{name}-OPTCFLAGS.patch
-Patch3:		%{name}-kill-dynamic_eap_methods.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
@@ -100,7 +99,6 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 install %{SOURCE1} .config
 
