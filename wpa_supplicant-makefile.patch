@@ -1,7 +1,6 @@
-Wspólne podkatalogi: wpa_supplicant-0.3.8.orig/doc i wpa_supplicant-0.3.8/doc
-diff -u wpa_supplicant-0.3.8.orig/Makefile wpa_supplicant-0.3.8/Makefile
---- wpa_supplicant-0.3.8.orig/Makefile	2005-02-14 02:55:47.000000000 +0100
-+++ wpa_supplicant-0.3.8/Makefile	2005-04-07 21:55:05.803706440 +0200
+diff -u wpa_supplicant-0.3.8.orig/wpa_supplicant/Makefile wpa_supplicant-0.3.8/wpa_supplicant/Makefile
+--- wpa_supplicant-0.3.8.orig/wpa_supplicant/Makefile	2005-02-14 02:55:47.000000000 +0100
++++ wpa_supplicant-0.3.8/wpa_supplicant/Makefile	2005-04-07 21:55:05.803706440 +0200
 @@ -32,8 +32,10 @@
  	echo CONFIG_WIRELESS_EXTENSION=y >> .config
  

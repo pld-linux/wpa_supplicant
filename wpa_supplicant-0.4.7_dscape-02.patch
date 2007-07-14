@@ -6,9 +6,9 @@ Devicescape ieee80211 stack. There is a plan to update Wireless Extension
 support in the stack so the "wext" driver can be used and this patch won't
 be needed.)
 
-diff -upN wpa_supplicant-0.4.7/defconfig wpa_supplicant-0.4.7-dev/defconfig
---- wpa_supplicant-0.4.7/defconfig	2005-09-24 20:30:43.000000000 +0200
-+++ wpa_supplicant-0.4.7-dev/defconfig	2005-12-18 12:13:21.000000000 +0100
+diff -upN wpa_supplicant-0.4.7/wpa_supplicant/defconfig wpa_supplicant-0.4.7-dev/wpa_supplicant/defconfig
+--- wpa_supplicant-0.4.7/wpa_supplicant/defconfig	2005-09-24 20:30:43.000000000 +0200
++++ wpa_supplicant-0.4.7-dev/wpa_suplicant/defconfig	2005-12-18 12:13:21.000000000 +0100
 @@ -38,6 +38,9 @@
  # Driver interface for Host AP driver
  CONFIG_DRIVER_HOSTAP=y
@@ -19,9 +19,9 @@ diff -upN wpa_supplicant-0.4.7/defconfig wpa_supplicant-0.4.7-dev/defconfig
  # Driver interface for Agere driver
  #CONFIG_DRIVER_HERMES=y
  # Change include directories to match with the local setup
-diff -upN wpa_supplicant-0.4.7/driver_dscape.c wpa_supplicant-0.4.7-dev/driver_dscape.c
---- wpa_supplicant-0.4.7/driver_dscape.c	1970-01-01 01:00:00.000000000 +0100
-+++ wpa_supplicant-0.4.7-dev/driver_dscape.c	2005-12-18 12:48:32.000000000 +0100
+diff -upN wpa_supplicant-0.4.7/src/drivers/driver_dscape.c wpa_supplicant-0.4.7-dev/src/drivers/driver_dscape.c
+--- wpa_supplicant-0.4.7/src/drivers/driver_dscape.c	1970-01-01 01:00:00.000000000 +0100
++++ wpa_supplicant-0.4.7-dev/src/drivers/driver_dscape.c	2005-12-18 12:48:32.000000000 +0100
 @@ -0,0 +1,466 @@
 +/*
 + * WPA Supplicant - driver interaction with Devicescape stack
@@ -40,7 +40,7 @@ diff -upN wpa_supplicant-0.4.7/driver_dscape.c wpa_supplicant-0.4.7-dev/driver_d
 + * See README and COPYING for more details.
 + */
 +
-+
++#include "includes.h"
 +#include <stdlib.h>
 +#include <stdio.h>
 +#include <unistd.h>
@@ -51,11 +51,11 @@ diff -upN wpa_supplicant-0.4.7/driver_dscape.c wpa_supplicant-0.4.7-dev/driver_d
 +#include "wireless_copy.h"
 +#include "common.h"
 +#include "driver.h"
++#include "driver_wext.h"
 +#include "eloop.h"
 +#include "driver_dscape.h"
-+#include "l2_packet.h"
-+#include "wpa_supplicant.h"
-+#include "driver_wext.h"
++
++
 +
 +
 +struct wpa_driver_dscape_data {
@@ -489,9 +489,9 @@ diff -upN wpa_supplicant-0.4.7/driver_dscape.c wpa_supplicant-0.4.7-dev/driver_d
 +        .init = wpa_driver_dscape_init,
 +        .deinit = wpa_driver_dscape_deinit,
 +};
-diff -upN wpa_supplicant-0.4.7/driver_dscape.h wpa_supplicant-0.4.7-dev/driver_dscape.h
---- wpa_supplicant-0.4.7/driver_dscape.h	1970-01-01 01:00:00.000000000 +0100
-+++ wpa_supplicant-0.4.7-dev/driver_dscape.h	2005-12-18 12:41:32.000000000 +0100
+diff -upN wpa_supplicant-0.4.7/src/drivers/driver_dscape.h wpa_supplicant-0.4.7-dev/src/drivers/driver_dscape.h
+--- wpa_supplicant-0.4.7/src/drivers/driver_dscape.h	1970-01-01 01:00:00.000000000 +0100
++++ wpa_supplicant-0.4.7-dev/src/drivers/driver_dscape.h	2005-12-18 12:41:32.000000000 +0100
 @@ -0,0 +1,452 @@
 +/*
 + * WPA Supplicant - driver interaction with devicescape stack
@@ -965,7 +965,7 @@ diff -upN wpa_supplicant-0.4.7/driver_dscape_hostapd_ioctl.h wpa_supplicant-0.4.
 +#define DSCAPE_HOSTAPD_IOCTL_H
 +
 +#ifndef __KERNEL__
-+#include "ieee80211_shared.h"
++
 +#endif /* __KERNEL__ */
 +
 +#define PRISM2_IOCTL_PRISM2_PARAM (SIOCIWFIRSTPRIV + 0)
@@ -1390,9 +1390,9 @@ diff -upN wpa_supplicant-0.4.7/driver_dscape_hostapd_ioctl.h wpa_supplicant-0.4.
 +((int) (&((struct prism2_hostapd_param *) 0)->u.set_generic_info_elem.data))
 +
 +#endif /* DSCAPE_HOSTAPD_IOCTL_H */
-diff -upN wpa_supplicant-0.4.7/drivers.c wpa_supplicant-0.4.7-dev/drivers.c
---- wpa_supplicant-0.4.7/drivers.c	2005-02-20 01:15:54.000000000 +0100
-+++ wpa_supplicant-0.4.7-dev/drivers.c	2005-12-18 12:13:21.000000000 +0100
+diff -upN wpa_supplicant-0.4.7/src/drivers/drivers.c wpa_supplicant-0.4.7-dev/src/drivers/drivers.c
+--- wpa_supplicant-0.4.7/src/drivers/drivers.c	2005-02-20 01:15:54.000000000 +0100
++++ wpa_supplicant-0.4.7-dev/src/drivers/drivers.c	2005-12-18 12:13:21.000000000 +0100
 @@ -18,6 +18,9 @@
  #ifdef CONFIG_DRIVER_HOSTAP
  extern struct wpa_driver_ops wpa_driver_hostap_ops; /* driver_hostap.c */
@@ -1413,9 +1413,9 @@ diff -upN wpa_supplicant-0.4.7/drivers.c wpa_supplicant-0.4.7-dev/drivers.c
  #ifdef CONFIG_DRIVER_PRISM54
  	&wpa_driver_prism54_ops,
  #endif /* CONFIG_DRIVER_PRISM54 */
-diff -upN wpa_supplicant-0.4.7/ieee80211_shared.h wpa_supplicant-0.4.7-dev/ieee80211_shared.h
---- wpa_supplicant-0.4.7/ieee80211_shared.h	1970-01-01 01:00:00.000000000 +0100
-+++ wpa_supplicant-0.4.7-dev/ieee80211_shared.h	2005-12-18 12:13:21.000000000 +0100
+diff -upN wpa_supplicant-0.4.7/src/drivers/ieee80211_shared.h wpa_supplicant-0.4.7-dev/src/drivers/ieee80211_shared.h
+--- wpa_supplicant-0.4.7/src/drivers/ieee80211_shared.h	1970-01-01 01:00:00.000000000 +0100
++++ wpa_supplicant-0.4.7-dev/src/drivers/ieee80211_shared.h	2005-12-18 12:13:21.000000000 +0100
 @@ -0,0 +1,50 @@
 +/*
 + * IEEE 802.11 -- shared defines for low-level drivers, 80211.o, and hostapd
@@ -1467,16 +1467,16 @@ diff -upN wpa_supplicant-0.4.7/ieee80211_shared.h wpa_supplicant-0.4.7-dev/ieee8
 +
 +
 +#endif /* IEEE80211_SHARED_H */
-diff -upN wpa_supplicant-0.4.7/Makefile wpa_supplicant-0.4.7-dev/Makefile
---- wpa_supplicant-0.4.7/Makefile	2005-11-21 02:42:12.000000000 +0100
-+++ wpa_supplicant-0.4.7-dev/Makefile	2005-12-18 12:13:21.000000000 +0100
+diff -upN wpa_supplicant-0.4.7/wpa_supplicant/Makefile wpa_supplicant-0.4.7-dev/wpa_supplicant/Makefile
+--- wpa_supplicant-0.4.7/wpa_supplicant/Makefile	2005-11-21 02:42:12.000000000 +0100
++++ wpa_supplicant-0.4.7-dev/wpa_supplicant/Makefile	2005-12-18 12:13:21.000000000 +0100
 @@ -61,6 +61,13 @@ OBJS_d += driver_hostap.o
  CONFIG_WIRELESS_EXTENSION=y
  endif
  
 +ifdef CONFIG_DRIVER_DSCAPE
 +CFLAGS += -DCONFIG_DRIVER_DSCAPE
-+OBJS_d += driver_dscape.o
++OBJS_d += ../src/drivers/driver_dscape.o
 +CONFIG_WIRELESS_EXTENSION=y
 +endif
 +

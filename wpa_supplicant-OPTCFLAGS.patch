@@ -1,6 +1,6 @@
-diff -Nur wpa_supplicant-0.5.4/Makefile wpa_supplicant-0.5.4.OPTCFLAGS/Makefile
---- wpa_supplicant-0.5.4/Makefile	2006-08-03 19:30:41.000000000 +0000
-+++ wpa_supplicant-0.5.4.OPTCFLAGS/Makefile	2006-08-03 19:30:42.000000000 +0000
+diff -Nur wpa_supplicant-0.5.4/wpa_supplicant/Makefile wpa_supplicant-0.5.4.OPTCFLAGS/wpa_supplicant/Makefile
+--- wpa_supplicant-0.5.4/wpa_supplicant/Makefile	2006-08-03 19:30:41.000000000 +0000
++++ wpa_supplicant-0.5.4.OPTCFLAGS/wpa_supplicant/Makefile	2006-08-03 19:30:42.000000000 +0000
 @@ -3,7 +3,7 @@
  endif
  
