@@ -17,12 +17,12 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	0.5.8
+Version:	0.6.0
 Release:	1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	7bb22f2bcdeed54b3fb5407d6d8bc9bb
+# Source0-md5:	635c7af7cecb39954997146b5c734b1c
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Patch0:		%{name}-makefile.patch
@@ -100,20 +100,20 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %patch1 -p1
 %patch2 -p1
 
-install %{SOURCE1} .config
+install %{SOURCE1} wpa_supplicant/.config
 
 %if %{with madwifi}
-echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
+echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 %endif
 
 %build
-%{__make} \
+%{__make} -C wpa_supplicant \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
 
 %if %{with gui}
-%{__make} wpa_gui \
+%{__make} -C wpa_supplicant wpa_gui \
 	QTDIR=/usr \
 	UIC=%{_bindir}/uic \
 	CC="%{__cc}" \
@@ -125,14 +125,15 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> .config
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir},/var/run/%{name}}
-%{__make} install \
+
+%{__make} -C wpa_supplicant install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
-install doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install wpa_supplicant/doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
+install wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 %if %{with gui}
-install wpa_gui/wpa_gui $RPM_BUILD_ROOT%{_bindir}
+install wpa_supplicant/wpa_gui/wpa_gui $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 %endif
 
@@ -141,7 +142,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog README eap_testing.txt todo.txt
+%doc wpa_supplicant/{ChangeLog,README,eap_testing.txt,todo.txt}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_sbindir}/*
 %attr(750,root,root) %dir /var/run/%{name}
