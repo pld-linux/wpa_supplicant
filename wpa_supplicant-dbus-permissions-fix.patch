@@ -1,0 +1,14 @@
+diff -up a/wpa_supplicant/dbus-wpa_supplicant.conf.permfix b/wpa_supplicant/dbus-wpa_supplicant.conf
+--- a/wpa_supplicant/dbus-wpa_supplicant.conf.permfix	2007-10-20 07:42:01.000000000 -0400
++++ b/wpa_supplicant/dbus-wpa_supplicant.conf	2007-10-20 07:42:22.000000000 -0400
+@@ -8,10 +8,6 @@
+                 <allow send_destination="fi.epitest.hostap.WPASupplicant"/>
+                 <allow send_interface="fi.epitest.hostap.WPASupplicant"/>
+         </policy>
+-        <policy at_console="true">
+-                <allow send_destination="fi.epitest.hostap.WPASupplicant"/>
+-                <allow send_interface="fi.epitest.hostap.WPASupplicant"/>
+-        </policy>
+         <policy context="default">
+                 <deny own="fi.epitest.hostap.WPASupplicant"/>
+                 <deny send_destination="fi.epitest.hostap.WPASupplicant"/>
