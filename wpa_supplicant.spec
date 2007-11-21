@@ -6,8 +6,9 @@
 #	used instead of madwifi - so madwifi bcond will become obsolete soon /
 #
 # Conditional build
-%bcond_with	madwifi		# with madwifi support
+%bcond_without	dbus		# don't build D-BUS control interface
 %bcond_without	gui		# don't build gui
+%bcond_with	madwifi		# with madwifi support
 #
 # sync archlist with madwifi.spec
 %ifnarch %{x8664} arm %{ix86} mips ppc xscale
@@ -18,17 +19,20 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.6.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	635c7af7cecb39954997146b5c734b1c
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
+Source3:	%{name}-dbus.service
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-0.4.7_dscape-02.patch
 Patch2:		%{name}-OPTCFLAGS.patch
+Patch3:		%{name}-dbus-permissions-fix.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
+%{?with_dbus:BuildRequires:	dbus-devel}
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
@@ -99,8 +103,15 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%if %{with dbus}
+%patch3 -p1
+%endif
 
 install %{SOURCE1} wpa_supplicant/.config
+
+%if %{with dbus}
+echo 'CONFIG_CTRL_IFACE_DBUS=y' >> wpa_supplicant/.config
+%endif
 
 %if %{with madwifi}
 echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
@@ -132,6 +143,12 @@ install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir},/var/ru
 install wpa_supplicant/doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
+%if %{with dbus}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/dbus-1/system.d,%{_datadir}/dbus-1/system-services}
+install wpa_supplicant/dbus-wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
+install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
+%endif
+
 %if %{with gui}
 install wpa_supplicant/wpa_gui/wpa_gui $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
@@ -147,6 +164,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/*
 %attr(750,root,root) %dir /var/run/%{name}
 %{_mandir}/man[58]/*
+%if %{with dbus}
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
+%{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
+%endif
 
 %if %{with gui}
 %files -n wpa_gui
