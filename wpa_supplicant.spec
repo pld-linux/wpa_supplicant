@@ -19,7 +19,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.6.1
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -160,6 +160,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc wpa_supplicant/{ChangeLog,README,eap_testing.txt,todo.txt}
+%doc wpa_supplicant/{*wpa_supplicant.conf,examples}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_sbindir}/*
 %attr(750,root,root) %dir /var/run/%{name}
