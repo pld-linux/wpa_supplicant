@@ -18,27 +18,27 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	0.6.1
-Release:	3
+Version:	0.6.3
+Release:	1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	99fe0c106803ab75356ebb93d20bd8c1
+# Source0-md5:	b51b2975f21006f85f7297f3fb1acde1
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Source3:	%{name}-dbus.service
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-0.4.7_dscape-02.patch
 Patch2:		%{name}-OPTCFLAGS.patch
-Patch3:		%{name}-dbus-permissions-fix.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 %if %{with gui}
-BuildRequires:	qmake
-BuildRequires:	qt-devel
+BuildRequires:	QtGui-devel
+BuildRequires:	Qt3Support-devel
+BuildRequires:	qt4-build
 %endif
 BuildRequires:	readline-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -103,9 +103,6 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%if %{with dbus}
-%patch3 -p1
-%endif
 
 install %{SOURCE1} wpa_supplicant/.config
 
@@ -124,9 +121,12 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 	OPTCFLAGS="%{rpmcflags}"
 
 %if %{with gui}
-%{__make} -C wpa_supplicant wpa_gui \
-	QTDIR=/usr \
-	UIC=%{_bindir}/uic \
+cd wpa_supplicant/wpa_gui-qt4
+qmake-qt4 -o Makefile wpa_gui.pro
+cd ../..
+%{__make} -C wpa_supplicant wpa_gui-qt4 \
+	QTDIR=%{_libdir}/qt4 \
+	UIC=%{_bindir}/uic-qt4 \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
 	LDFLAGS="%{rpmldflags}" \
@@ -150,7 +150,7 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services/fi.epitest.
 %endif
 
 %if %{with gui}
-install wpa_supplicant/wpa_gui/wpa_gui $RPM_BUILD_ROOT%{_bindir}
+install wpa_supplicant/wpa_gui-qt4/wpa_gui $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 %endif
 
