@@ -432,7 +432,7 @@ diff -upN wpa_supplicant-0.4.7/src/drivers/driver_dscape.c wpa_supplicant-0.4.7-
 +static int wpa_driver_dscape_get_scan_results(void *priv, struct wpa_scan_result *results, size_t max_size)
 +{
 +	struct wpa_driver_dscape_data *drv = priv;
-+	return wpa_driver_wext_get_scan_results(drv->wext, results, max_size);
++	return wpa_driver_wext_get_scan_results(drv->wext);
 +}
 +
 +static void * wpa_driver_dscape_init(void *ctx, const char *ifname)
