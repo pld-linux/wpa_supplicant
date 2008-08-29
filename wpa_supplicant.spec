@@ -128,6 +128,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 cd wpa_supplicant/wpa_gui-qt4
 qmake-qt4 -o Makefile wpa_gui.pro
 cd ../..
+touch wpa_supplicant/wpa_gui-qt4/Makefile
 %{__make} -j1 -C wpa_supplicant wpa_gui-qt4 \
 	QTDIR=%{_libdir}/qt4 \
 	UIC=%{_bindir}/uic-qt4 \
@@ -136,7 +137,7 @@ cd ../..
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
 %endif
-tar cjf - . | uuencode -
+#tar cjf - . | uuencode -
 
 %install
 rm -rf $RPM_BUILD_ROOT
