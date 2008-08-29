@@ -2,7 +2,7 @@
 # - wpa_gui can be built with qt4 - bcond?
 # - icon for wpa_gui
 # - reverse madwifi bcond when appropriate packages will be available on ftp
-#	/ as of madwifi-ng > r1499 and kernel > 2.6.14 wext driver could be 
+#	/ as of madwifi-ng > r1499 and kernel > 2.6.14 wext driver could be
 #	used instead of madwifi - so madwifi bcond will become obsolete soon /
 #
 # Conditional build
@@ -36,9 +36,10 @@ URL:		http://hostap.epitest.fi/wpa_supplicant/
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 %if %{with gui}
-BuildRequires:	QtGui-devel
 BuildRequires:	Qt3Support-devel
+BuildRequires:	QtGui-devel
 BuildRequires:	qt4-build
+BuildRequires:	qt4-qmake
 %endif
 BuildRequires:	readline-devel
 Requires:	rc-scripts >= 0.4.1.24
@@ -167,7 +168,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(750,root,root) %dir /var/run/%{name}
 %{_mandir}/man[58]/*
 %if %{with dbus}
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/wpa_supplicant.conf
 %{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
 %endif
 
