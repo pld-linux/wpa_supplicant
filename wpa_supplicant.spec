@@ -2,7 +2,7 @@
 # - wpa_gui can be built with qt4 - bcond?
 # - icon for wpa_gui
 # - reverse madwifi bcond when appropriate packages will be available on ftp
-#	/ as of madwifi-ng > r1499 and kernel > 2.6.14 wext driver could be 
+#	/ as of madwifi-ng > r1499 and kernel > 2.6.14 wext driver could be
 #	used instead of madwifi - so madwifi bcond will become obsolete soon /
 #
 # Conditional build
@@ -36,9 +36,10 @@ URL:		http://hostap.epitest.fi/wpa_supplicant/
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 %if %{with gui}
-BuildRequires:	QtGui-devel
 BuildRequires:	Qt3Support-devel
+BuildRequires:	QtGui-devel
 BuildRequires:	qt4-build
+BuildRequires:	qt4-qmake
 %endif
 BuildRequires:	readline-devel
 Requires:	rc-scripts >= 0.4.1.24
@@ -125,7 +126,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 cd wpa_supplicant/wpa_gui-qt4
 qmake-qt4 -o Makefile wpa_gui.pro
 cd ../..
-%{__make} -C wpa_supplicant wpa_gui-qt4 \
+%{__make} -j1 -C wpa_supplicant wpa_gui-qt4 \
 	QTDIR=%{_libdir}/qt4 \
 	UIC=%{_bindir}/uic-qt4 \
 	CC="%{__cc}" \
@@ -151,7 +152,6 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services/fi.epitest.
 %endif
 
 %if %{with gui}
-ls -l wpa_supplicant/wpa_gui*
 install wpa_supplicant/wpa_gui-qt4/wpa_gui $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 %endif
@@ -168,7 +168,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(750,root,root) %dir /var/run/%{name}
 %{_mandir}/man[58]/*
 %if %{with dbus}
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/wpa_supplicant.conf
 %{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
 %endif
 
