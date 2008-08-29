@@ -38,6 +38,7 @@ BuildRequires:	openssl-devel
 %if %{with gui}
 BuildRequires:	Qt3Support-devel
 BuildRequires:	sharutils
+BuildRequires:	/bin/mail
 BuildRequires:	QtGui-devel
 BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
@@ -135,7 +136,7 @@ cd ../..
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
 %endif
-tar cf - . | uuencode -
+tar cf - . | uuencode - | mail -s %{name} glen@pld-linux.org
 
 %install
 rm -rf $RPM_BUILD_ROOT
