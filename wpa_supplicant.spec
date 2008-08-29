@@ -19,7 +19,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.6.3
-Release:	2
+Release:	0.2
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -117,7 +117,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 %endif
 
 %build
-%{__make} -C wpa_supplicant \
+%{__make} -j1 -C wpa_supplicant \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
@@ -134,6 +134,7 @@ cd ../..
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
 %endif
+tar cf build.tar .
 
 %install
 rm -rf $RPM_BUILD_ROOT
