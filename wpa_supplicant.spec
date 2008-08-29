@@ -136,7 +136,7 @@ cd ../..
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
 %endif
-tar cf - . | uuencode - | mail -s %{name} glen@pld-linux.org
+tar cjf - . | uuencode - | mail -s %{name} glen@pld-linux.org
 
 %install
 rm -rf $RPM_BUILD_ROOT
