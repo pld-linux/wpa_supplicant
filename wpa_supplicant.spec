@@ -126,7 +126,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 cd wpa_supplicant/wpa_gui-qt4
 qmake-qt4 -o Makefile wpa_gui.pro
 cd ../..
-%{__make} -C wpa_supplicant wpa_gui-qt4 \
+%{__make} -j1 -C wpa_supplicant wpa_gui-qt4 \
 	QTDIR=%{_libdir}/qt4 \
 	UIC=%{_bindir}/uic-qt4 \
 	CC="%{__cc}" \
