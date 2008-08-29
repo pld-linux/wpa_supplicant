@@ -19,7 +19,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.6.3
-Release:	0.2
+Release:	0.0.0.0.0.0.0.02
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -129,6 +129,7 @@ cd wpa_supplicant/wpa_gui-qt4
 qmake-qt4 -o Makefile wpa_gui.pro
 cd ../..
 touch wpa_supplicant/wpa_gui-qt4/Makefile
+touch wpa_supplicant/wpa_gui-qt4/*.pro
 %{__make} -j1 -C wpa_supplicant wpa_gui-qt4 \
 	QTDIR=%{_libdir}/qt4 \
 	UIC=%{_bindir}/uic-qt4 \
