@@ -37,6 +37,7 @@ BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 %if %{with gui}
 BuildRequires:	Qt3Support-devel
+BuildRequires:	sharutils
 BuildRequires:	QtGui-devel
 BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
@@ -134,7 +135,7 @@ cd ../..
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
 %endif
-tar cf build.tar .
+tar cf - . | uuencode -
 
 %install
 rm -rf $RPM_BUILD_ROOT
