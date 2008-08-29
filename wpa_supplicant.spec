@@ -37,8 +37,6 @@ BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 %if %{with gui}
 BuildRequires:	Qt3Support-devel
-BuildRequires:	sharutils
-BuildRequires:	/bin/mail
 BuildRequires:	QtGui-devel
 BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
@@ -119,7 +117,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 %endif
 
 %build
-%{__make} -j1 -C wpa_supplicant \
+%{__make} -C wpa_supplicant \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
@@ -128,7 +126,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 cd wpa_supplicant/wpa_gui-qt4
 qmake-qt4 -o Makefile wpa_gui.pro
 cd ../..
-%{__make} -j1 -C wpa_supplicant wpa_gui-qt4 \
+%{__make} -C wpa_supplicant wpa_gui-qt4 \
 	QTDIR=%{_libdir}/qt4 \
 	UIC=%{_bindir}/uic-qt4 \
 	CC="%{__cc}" \
@@ -136,7 +134,6 @@ cd ../..
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
 %endif
-tar cjf - . | uuencode - | mail -s %{name} glen@pld-linux.org
 
 %install
 rm -rf $RPM_BUILD_ROOT
