@@ -151,6 +151,7 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services/fi.epitest.
 %endif
 
 %if %{with gui}
+ls -l wpa_supplicant/wpa_gui*
 install wpa_supplicant/wpa_gui-qt4/wpa_gui $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 %endif
