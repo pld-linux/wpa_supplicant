@@ -19,7 +19,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.6.4
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -30,6 +30,8 @@ Source3:	%{name}-dbus.service
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-0.4.7_dscape-02.patch
 Patch2:		%{name}-OPTCFLAGS.patch
+# http://www.eduroam.pl/index.php?page=wpa_suplicant_patch:
+#Patch3:		%{name}-rfc4372.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 %{?with_madwifi:BuildRequires:	madwifi-devel}
@@ -105,6 +107,7 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+#%patch3 -p1
 
 install %{SOURCE1} wpa_supplicant/.config
 
@@ -118,6 +121,12 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 
 %build
 %{__make} -C wpa_supplicant \
+	CC="%{__cc}" \
+	LDFLAGS="%{rpmldflags}" \
+	OPTCFLAGS="%{rpmcflags}"
+
+# eapol_test:
+%{__make} -C wpa_supplicant eapol_test \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcflags}"
@@ -156,6 +165,8 @@ install wpa_supplicant/wpa_gui-qt4/wpa_gui $RPM_BUILD_ROOT%{_bindir}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 %endif
 
+install wpa_supplicant/eapol_test $RPM_BUILD_ROOT%{_bindir}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -165,6 +176,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc wpa_supplicant/{*wpa_supplicant.conf,examples}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_bindir}/eapol_test
 %attr(750,root,root) %dir /var/run/%{name}
 %{_mandir}/man[58]/*
 %if %{with dbus}
