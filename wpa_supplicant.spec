@@ -30,8 +30,6 @@ Source3:	%{name}-dbus.service
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-0.4.7_dscape-02.patch
 Patch2:		%{name}-OPTCFLAGS.patch
-# http://www.eduroam.pl/index.php?page=wpa_suplicant_patch:
-#Patch3:		%{name}-rfc4372.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 %{?with_madwifi:BuildRequires:	madwifi-devel}
@@ -107,7 +105,6 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-#%patch3 -p1
 
 install %{SOURCE1} wpa_supplicant/.config
 
