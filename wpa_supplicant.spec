@@ -35,6 +35,7 @@ URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
+BuildRequires:	pkgconfig
 %if %{with gui}
 BuildRequires:	Qt3Support-devel
 BuildRequires:	QtGui-devel
