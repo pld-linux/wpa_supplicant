@@ -175,7 +175,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %{_bindir}/eapol_test
-%attr(750,root,root) %dir /var/run/%{name}
+%attr(750,root,root) %ghost %dir /var/run/%{name}
 %{_mandir}/man[58]/*
 %if %{with dbus}
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/wpa_supplicant.conf
