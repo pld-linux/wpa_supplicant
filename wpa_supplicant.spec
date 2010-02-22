@@ -18,18 +18,17 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	0.6.9
+Version:	0.7.1
 Release:	1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	0efb8fcedf0a8acf6f423dfdb0658fdd
+# Source0-md5:	02c475f949e5c131856915bbb87fa55d
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Source3:	%{name}-dbus.service
 Patch0:		%{name}-makefile.patch
-Patch1:		%{name}-0.4.7_dscape-02.patch
-Patch2:		%{name}-OPTCFLAGS.patch
+Patch1:		%{name}-OPTCFLAGS.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 %{?with_madwifi:BuildRequires:	madwifi-devel}
@@ -105,7 +104,6 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 install %{SOURCE1} wpa_supplicant/.config
 
@@ -121,13 +119,13 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 %{__make} -C wpa_supplicant \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
-	OPTCFLAGS="%{rpmcflags}"
+	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
 
 # eapol_test:
 %{__make} -C wpa_supplicant eapol_test \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
-	OPTCFLAGS="%{rpmcflags}"
+	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
 
 %if %{with gui}
 cd wpa_supplicant/wpa_gui-qt4
@@ -139,7 +137,7 @@ cd ../..
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
 	LDFLAGS="%{rpmldflags}" \
-	OPTCFLAGS="%{rpmcflags}"
+	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
 %endif
 
 %install
@@ -155,7 +153,7 @@ install wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 %if %{with dbus}
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/dbus-1/system.d,%{_datadir}/dbus-1/system-services}
-install wpa_supplicant/dbus-wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
+install wpa_supplicant/dbus/dbus-wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
 install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
 %endif
 
