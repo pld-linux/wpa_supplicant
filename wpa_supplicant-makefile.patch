@@ -9,13 +9,3 @@
  	mkdir -p $(DESTDIR)$(BINDIR)
  	for i in $(ALL); do cp $$i $(DESTDIR)$(BINDIR)/$$i; done
  	$(MAKE) -C ../src install
-@@ -1082,7 +1082,8 @@
- wpa_gui-qt4/Makefile:
- 	qmake -o wpa_gui-qt4/Makefile wpa_gui-qt4/wpa_gui.pro 
- 
--wpa_gui-qt4: wpa_gui-qt4/Makefile
-+.PHONY: wpa_gui-qt4
-+wpa_gui-qt4:
- 	$(MAKE) -C wpa_gui-qt4
- 
- TEST_MS_FUNCS_OBJS = ../src/crypto/crypto_openssl.o ../src/crypto/sha1.o ../src/crypto/md5.o \
