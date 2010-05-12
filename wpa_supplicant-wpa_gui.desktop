@@ -6,5 +6,5 @@ Icon=wpa_gui
 Exec=wpa_gui
 Terminal=false
 Type=Application
-Categories=System;
+Categories=Network;System;
 # vi: encoding=utf-8
