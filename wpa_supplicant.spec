@@ -31,13 +31,14 @@ Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-OPTCFLAGS.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
+BuildRequires:	libnl-devel
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 %if %{with gui}
-BuildRequires:	Qt3Support-devel
 BuildRequires:	QtGui-devel
+BuildRequires:	qt-linguist
 BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
 %endif
