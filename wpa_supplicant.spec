@@ -1,9 +1,9 @@
 # TODO:
-# - wpa_gui can be built with qt4 - bcond?
 # - icon for wpa_gui
 # - reverse madwifi bcond when appropriate packages will be available on ftp
 #	/ as of madwifi-ng > r1499 and kernel > 2.6.14 wext driver could be
 #	used instead of madwifi - so madwifi bcond will become obsolete soon /
+# - syslog-support patch should be fixed and/or ripped from debian/ubuntu
 #
 # Conditional build
 %bcond_without	dbus		# don't build D-BUS control interface
@@ -30,6 +30,7 @@ Source3:	%{name}-dbus.service
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-OPTCFLAGS.patch
 Patch2:		%{name}-lrelease.patch
+Patch3:		%{name}-syslog-support.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel
@@ -107,6 +108,7 @@ Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p0
+#patch3 -p0
 
 install %{SOURCE1} wpa_supplicant/.config
 
