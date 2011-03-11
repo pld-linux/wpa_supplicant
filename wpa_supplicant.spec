@@ -47,6 +47,7 @@ BuildRequires:	qt4-build
 BuildRequires:	qt4-qmake
 %endif
 BuildRequires:	readline-devel
+BuildRequires:	sed >= 4.0
 Requires:	rc-scripts >= 0.4.1.24
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -136,6 +137,8 @@ Pliki programistyczne dla biblioteki eap.
 #patch3 -p0
 %patch4 -p1
 
+%{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
+
 install %{SOURCE1} wpa_supplicant/.config
 
 %if %{with dbus}
@@ -204,7 +207,8 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 install wpa_supplicant/eapol_test $RPM_BUILD_ROOT%{_bindir}
 
 %{__make} -C src/eap_peer install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	LIBDIR=%{_libdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

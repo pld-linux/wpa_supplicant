@@ -68,7 +68,7 @@ index 3651056..58c067a 100644
 +CONFIG_TLS=openssl
 +
 +INCLUDE_INSTALL_DIR=/usr/include/eap_peer
-+
++LIBDIR=/usr/lib
 +# Got to use override all across the board, otherwise a 'make
 +# CFLAGS=XX' will kill us because the command line's CFLAGS will
 +# overwrite Make's and we'll loose all the infrastructure it sets.
@@ -201,10 +201,10 @@ index 3651056..58c067a 100644
 +
 +install: 
 +
-+	mkdir -p $(DESTDIR)/usr/lib
++	mkdir -p $(DESTDIR)$(LIBDIR)
 +#	copy the lib file to std lib location
-+	cp $(LIBEAP) $(DESTDIR)/usr/lib
-+	ln -fs $(LIBEAP_SO) $(DESTDIR)/usr/lib/$(LIBEAP_NAME).so
++	cp $(LIBEAP) $(DESTDIR)$(LIBDIR)
++	ln -fs $(LIBEAP_SO) $(DESTDIR)$(LIBDIR)/$(LIBEAP_NAME).so
 +
 +#	copy the headers reqd by apps using eap peer library in its own subfolder under /usr/include
 +	mkdir -p \
@@ -218,14 +218,14 @@ index 3651056..58c067a 100644
 +	install -m 0644 $(UTIL_HEADERS) $(DESTDIR)/$(INCLUDE_INSTALL_DIR)/util
 +	install -m 0644 $(MAIN_HEADERS) $(DESTDIR)/$(INCLUDE_INSTALL_DIR)/
 +
-+	mkdir -p $(DESTDIR)/usr/lib/pkgconfig
-+	cp libeap0.pc $(DESTDIR)/usr/lib/pkgconfig
++	mkdir -p $(DESTDIR)$(LIBDIR)/pkgconfig
++	cp libeap0.pc $(DESTDIR)$(LIBDIR)/pkgconfig
 +
 +uninstall: 
 +
-+	rm $(DESTDIR)/usr/lib/$(LIBEAP)
++	rm $(DESTDIR)$(LIBDIR)/$(LIBEAP)
 +	rm -fr $(DESTDIR)/$(INCLUDE_INSTALL_DIR)
-+	rm -f $(DESTDIR)/usr/lib/pkgconfig/libeap0.pc
++	rm -f $(DESTDIR)$(LIBDIR)/pkgconfig/libeap0.pc
  
  clean:
 -	rm -f *~ *.o *.so *.d
@@ -382,7 +382,7 @@ index 0000000..2f8463a
 @@ -0,0 +1,10 @@
 +prefix=/usr
 +exec_prefix=/usr
-+libdir=${exec_prefix}/lib
++libdir=${exec_prefix}/@LIB@
 +includedir=${prefix}/include/eap_peer
 +
 +Name: libeap0
