@@ -19,7 +19,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.7.3
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -31,6 +31,8 @@ Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-OPTCFLAGS.patch
 Patch2:		%{name}-lrelease.patch
 Patch3:		%{name}-syslog-support.patch
+# http://www.linuxwimax.org/Download
+Patch4:		%{name}-0.7.2-generate-libeap-peer.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel
@@ -103,12 +105,36 @@ Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI.
 %description -n wpa_gui -l pl.UTF-8
 Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa.
 
+%package -n libeap
+Summary:	EAP Peer library
+Summary(pl.UTF-8):	Biblioteka EAP Peer
+Group:		Libraries
+
+%description -n libeap
+EAP Peer library.
+
+%description -n libeap -l pl.UTF-8
+Biblioteka EAP Peer.
+
+%package -n libeap-devel
+Summary:	Development files for eap library
+Summary(pl.UTF-8):	Pliki programistyczne dla biblioteki eap
+Group:		Development/Libraries
+Requires:	libeap = %{version}-%{release}
+
+%description -n libeap-devel
+Development files for eap library.
+
+%description -n libeap-devel -l pl.UTF-8
+Pliki programistyczne dla biblioteki eap.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p0
 #patch3 -p0
+%patch4 -p1
 
 install %{SOURCE1} wpa_supplicant/.config
 
@@ -145,13 +171,21 @@ cd ../..
 	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
 %endif
 
+%{__make} -C src/eap_peer clean
+%{__make} -C src/eap_peer \
+	CC="%{__cc}" \
+	LDFLAGS="%{rpmldflags} -shared" \
+	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_desktopdir},/var/run/%{name}}
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_sbindir},%{_desktopdir},/var/run/%{name},%{_sysconfdir}}
 
-%{__make} -C wpa_supplicant install \
-	BINDIR=%{_sbindir} \
-	DESTDIR=$RPM_BUILD_ROOT
+install wpa_supplicant/wpa_cli $RPM_BUILD_ROOT%{_sbindir}
+install wpa_supplicant/wpa_passphrase $RPM_BUILD_ROOT%{_sbindir}
+install wpa_supplicant/wpa_supplicant $RPM_BUILD_ROOT%{_sbindir}
+
+install wpa_supplicant/wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}
 
 install wpa_supplicant/doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
@@ -169,8 +203,14 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 
 install wpa_supplicant/eapol_test $RPM_BUILD_ROOT%{_bindir}
 
+%{__make} -C src/eap_peer install \
+	DESTDIR=$RPM_BUILD_ROOT
+
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post -n libeap -p /sbin/ldconfig
+%postun -n libeap -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -192,3 +232,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/wpa_gui
 %{_desktopdir}/wpa_gui.desktop
 %endif
+
+%files -n libeap
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libeap.so.*.*.*
+
+%files -n libeap-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libeap.so
+%{_includedir}/eap_peer
+%{_pkgconfigdir}/libeap0.pc
