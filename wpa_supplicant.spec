@@ -19,20 +19,21 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.7.3
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	f516f191384a9a546e3f5145c08addda
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
-Source3:	%{name}-dbus.service
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-OPTCFLAGS.patch
 Patch2:		%{name}-lrelease.patch
 Patch3:		%{name}-syslog-support.patch
 # http://www.linuxwimax.org/Download
 Patch4:		%{name}-0.7.2-generate-libeap-peer.patch
+Patch5:		dbus-services.patch
+Patch6:		bss-changed-prop-notify.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel
@@ -136,6 +137,8 @@ Pliki programistyczne dla biblioteki eap.
 %patch2 -p0
 #patch3 -p0
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 %{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
 
@@ -143,6 +146,8 @@ install %{SOURCE1} wpa_supplicant/.config
 
 %if %{with dbus}
 echo 'CONFIG_CTRL_IFACE_DBUS=y' >> wpa_supplicant/.config
+echo 'CONFIG_CTRL_IFACE_DBUS_NEW=y' >> wpa_supplicant/.config
+echo 'CONFIG_CTRL_IFACE_DBUS_INTRO=y' >> wpa_supplicant/.config
 %endif
 
 %if %{with madwifi}
@@ -196,7 +201,7 @@ install wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 %if %{with dbus}
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/dbus-1/system.d,%{_datadir}/dbus-1/system-services}
 install wpa_supplicant/dbus/dbus-wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
-install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
+install wpa_supplicant/dbus/*.service $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services
 %endif
 
 %if %{with gui}
@@ -228,6 +233,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with dbus}
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/wpa_supplicant.conf
 %{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
+%{_datadir}/dbus-1/system-services/fi.w1.wpa_supplicant1.service
 %endif
 
 %if %{with gui}
