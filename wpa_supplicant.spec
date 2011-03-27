@@ -19,7 +19,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.7.3
-Release:	5
+Release:	6
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -36,7 +36,7 @@ Patch5:		dbus-services.patch
 Patch6:		bss-changed-prop-notify.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
-BuildRequires:	libnl-devel
+BuildRequires:	libnl-devel >= 1:2.0
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
@@ -156,12 +156,14 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 
 %build
 %{__make} -C wpa_supplicant \
+	V=1 \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
 
 # eapol_test:
 %{__make} -C wpa_supplicant eapol_test \
+	V=1 \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
@@ -171,6 +173,7 @@ cd wpa_supplicant/wpa_gui-qt4
 qmake-qt4 -o Makefile wpa_gui.pro
 cd ../..
 %{__make} -C wpa_supplicant wpa_gui-qt4 \
+	V=1 \
 	QTDIR=%{_libdir}/qt4 \
 	UIC=%{_bindir}/uic-qt4 \
 	CC="%{__cc}" \
