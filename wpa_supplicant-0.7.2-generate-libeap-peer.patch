@@ -42,7 +42,7 @@ diff --git a/src/eap_peer/Makefile b/src/eap_peer/Makefile
 index 3651056..58c067a 100644
 --- a/src/eap_peer/Makefile
 +++ b/src/eap_peer/Makefile
-@@ -1,11 +1,186 @@
+@@ -1,11 +1,187 @@
 -all:
 -	@echo Nothing to be made.
 +LIBEAP_NAME = libeap
@@ -204,7 +204,8 @@ index 3651056..58c067a 100644
 +	mkdir -p $(DESTDIR)$(LIBDIR)
 +#	copy the lib file to std lib location
 +	cp $(LIBEAP) $(DESTDIR)$(LIBDIR)
-+	ln -fs $(LIBEAP_SO) $(DESTDIR)$(LIBDIR)/$(LIBEAP_NAME).so
++	ln -fs $(LIBEAP) $(DESTDIR)$(LIBDIR)/$(LIBEAP_SO)
++	ln -fs $(LIBEAP) $(DESTDIR)$(LIBDIR)/$(LIBEAP_NAME).so
 +
 +#	copy the headers reqd by apps using eap peer library in its own subfolder under /usr/include
 +	mkdir -p \

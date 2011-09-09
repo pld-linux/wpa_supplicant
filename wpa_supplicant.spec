@@ -1,4 +1,5 @@
 # TODO:
+# - consider using CONFIG_PRIVSEP
 # - icon for wpa_gui
 # - reverse madwifi bcond when appropriate packages will be available on ftp
 #	/ as of madwifi-ng > r1499 and kernel > 2.6.14 wext driver could be
@@ -201,6 +202,9 @@ install wpa_supplicant/wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}
 install wpa_supplicant/doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
 install wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
+# program exists with CONFIG_PRIVSEP only
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/wpa_priv.8
+
 %if %{with dbus}
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/dbus-1/system.d,%{_datadir}/dbus-1/system-services}
 install wpa_supplicant/dbus/dbus-wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
@@ -221,18 +225,24 @@ install wpa_supplicant/eapol_test $RPM_BUILD_ROOT%{_bindir}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -n libeap -p /sbin/ldconfig
-%postun -n libeap -p /sbin/ldconfig
+%post	-n libeap -p /sbin/ldconfig
+%postun	-n libeap -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
 %doc wpa_supplicant/{ChangeLog,README,eap_testing.txt,todo.txt}
 %doc wpa_supplicant/{*wpa_supplicant.conf,examples}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
-%attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %{_bindir}/eapol_test
+%attr(755,root,root) %{_sbindir}/wpa_cli
+%attr(755,root,root) %{_sbindir}/wpa_passphrase
+%attr(755,root,root) %{_sbindir}/wpa_supplicant
 %attr(750,root,root) %ghost %dir /var/run/%{name}
-%{_mandir}/man[58]/*
+%{_mandir}/man5/wpa_supplicant.conf.5*
+%{_mandir}/man8/wpa_background.8*
+%{_mandir}/man8/wpa_cli.8*
+%{_mandir}/man8/wpa_passphrase.8*
+%{_mandir}/man8/wpa_supplicant.8*
 %if %{with dbus}
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/wpa_supplicant.conf
 %{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
@@ -243,12 +253,14 @@ rm -rf $RPM_BUILD_ROOT
 %files -n wpa_gui
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/wpa_gui
+%{_mandir}/man8/wpa_gui.8*
 %{_desktopdir}/wpa_gui.desktop
 %endif
 
 %files -n libeap
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libeap.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libeap.so.0
 
 %files -n libeap-devel
 %defattr(644,root,root,755)
