@@ -20,7 +20,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.7.3
-Release:	7
+Release:	8
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -35,6 +35,7 @@ Patch3:		%{name}-syslog-support.patch
 Patch4:		%{name}-0.7.2-generate-libeap-peer.patch
 Patch5:		dbus-services.patch
 Patch6:		bss-changed-prop-notify.patch
+Patch7:		%{name}-nl.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel >= 1:2.0
@@ -140,6 +141,7 @@ Pliki programistyczne dla biblioteki eap.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
 
@@ -159,8 +161,8 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 %{__make} -C wpa_supplicant \
 	V=1 \
 	CC="%{__cc}" \
-	LDFLAGS="%{rpmldflags}" \
-	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
+	LDFLAGS="%{rpmldflags} `pkg-config --libs libnl-3.0 libnl-genl-3.0`" \
+	OPTCFLAGS="%{rpmcppflags} %{rpmcflags} `pkg-config --cflags libnl-3.0`"
 
 # eapol_test:
 %{__make} -C wpa_supplicant eapol_test \
