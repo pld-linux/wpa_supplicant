@@ -38,7 +38,7 @@ Patch6:		bss-changed-prop-notify.patch
 Patch7:		%{name}-nl.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
-BuildRequires:	libnl-devel >= 1:2.0
+BuildRequires:	libnl-devel >= 1:3.2
 %{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
