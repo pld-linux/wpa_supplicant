@@ -20,7 +20,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	0.7.3
-Release:	8
+Release:	9
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -161,7 +161,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 %{__make} -C wpa_supplicant \
 	V=1 \
 	CC="%{__cc}" \
-	LDFLAGS="%{rpmldflags} `pkg-config --libs libnl-3.0 libnl-genl-3.0`" \
+	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcppflags} %{rpmcflags} `pkg-config --cflags libnl-3.0`"
 
 # eapol_test:

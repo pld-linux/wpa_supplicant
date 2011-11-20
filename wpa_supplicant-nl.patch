@@ -1,13 +1,15 @@
 --- wpa_supplicant-0.7.3/src/drivers/drivers.mak~	2010-09-07 17:43:39.000000000 +0200
-+++ wpa_supplicant-0.7.3/src/drivers/drivers.mak	2011-09-17 09:25:24.005139544 +0200
-@@ -31,10 +31,8 @@
++++ wpa_supplicant-0.7.3/src/drivers/drivers.mak	2011-11-21 00:27:39.945705773 +0100
+@@ -31,10 +31,10 @@
  NEED_AP_MLME=y
  NEED_NETLINK=y
  NEED_LINUX_IOCTL=y
 -DRV_LIBS += -lnl
++DRV_LIBS += `pkg-config --libs libnl-3.0`
  
  ifdef CONFIG_LIBNL20
 -DRV_LIBS += -lnl-genl
++DRV_LIBS += `pkg-config --libs libnl-genl-3.0`
  DRV_CFLAGS += -DCONFIG_LIBNL20
  endif
  endif
