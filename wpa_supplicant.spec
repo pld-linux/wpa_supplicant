@@ -27,6 +27,7 @@ Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	f516f191384a9a546e3f5145c08addda
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
+Source3:	%{name}.tmpfiles
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-OPTCFLAGS.patch
 Patch2:		%{name}-lrelease.patch
@@ -193,7 +194,8 @@ cd ../..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_sbindir},%{_desktopdir},/var/run/%{name},%{_sysconfdir}}
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_sbindir},%{_desktopdir},/var/run/%{name},%{_sysconfdir}} \
+	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
 install wpa_supplicant/wpa_cli $RPM_BUILD_ROOT%{_sbindir}
 install wpa_supplicant/wpa_passphrase $RPM_BUILD_ROOT%{_sbindir}
@@ -220,6 +222,8 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 
 install wpa_supplicant/eapol_test $RPM_BUILD_ROOT%{_bindir}
 
+install %{SOURCE3} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
+
 %{__make} -C src/eap_peer install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	LIBDIR=%{_libdir}
@@ -240,6 +244,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/wpa_passphrase
 %attr(755,root,root) %{_sbindir}/wpa_supplicant
 %attr(750,root,root) %ghost %dir /var/run/%{name}
+/usr/lib/tmpfiles.d/%{name}.conf
 %{_mandir}/man5/wpa_supplicant.conf.5*
 %{_mandir}/man8/wpa_background.8*
 %{_mandir}/man8/wpa_cli.8*
