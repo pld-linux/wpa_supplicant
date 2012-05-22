@@ -1,10 +1,6 @@
 # TODO:
 # - consider using CONFIG_PRIVSEP
 # - icon for wpa_gui
-# - reverse madwifi bcond when appropriate packages will be available on ftp
-#	/ as of madwifi-ng > r1499 and kernel > 2.6.14 wext driver could be
-#	used instead of madwifi - so madwifi bcond will become obsolete soon /
-# - syslog-support patch should be fixed and/or ripped from debian/ubuntu
 #
 # Conditional build
 %bcond_without	dbus		# don't build D-BUS control interface
@@ -19,24 +15,21 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	0.7.3
-Release:	10
+Version:	1.0
+Release:	1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	f516f191384a9a546e3f5145c08addda
+# Source0-md5:	8650f6aa23646ef634402552d0669640
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Source3:	%{name}.tmpfiles
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-OPTCFLAGS.patch
 Patch2:		%{name}-lrelease.patch
-Patch3:		%{name}-syslog-support.patch
 # http://www.linuxwimax.org/Download
-Patch4:		%{name}-0.7.2-generate-libeap-peer.patch
-Patch5:		dbus-services.patch
-Patch6:		bss-changed-prop-notify.patch
-Patch7:		%{name}-nl.patch
+Patch3:		%{name}-0.7.2-generate-libeap-peer.patch
+Patch4:		dbus-services.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel >= 1:3.2
@@ -138,11 +131,8 @@ Pliki programistyczne dla biblioteki eap.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p0
-#patch3 -p0
+%patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
 
 %{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
 
@@ -163,7 +153,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 	V=1 \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
-	OPTCFLAGS="%{rpmcppflags} %{rpmcflags} `pkg-config --cflags libnl-3.0`"
+	OPTCFLAGS="%{rpmcppflags} %{rpmcflags} $(pkg-config --cflags libnl-3.0)"
 
 # eapol_test:
 %{__make} -C wpa_supplicant eapol_test \

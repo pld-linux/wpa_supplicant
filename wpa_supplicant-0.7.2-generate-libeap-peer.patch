@@ -42,7 +42,7 @@ diff --git a/src/eap_peer/Makefile b/src/eap_peer/Makefile
 index 3651056..58c067a 100644
 --- a/src/eap_peer/Makefile
 +++ b/src/eap_peer/Makefile
-@@ -1,11 +1,187 @@
+@@ -1,11 +1,188 @@
 -all:
 -	@echo Nothing to be made.
 +LIBEAP_NAME = libeap
@@ -83,6 +83,7 @@ index 3651056..58c067a 100644
 +OBJS_both += ../utils/wpa_debug.o
 +OBJS_both += ../utils/base64.o
 +OBJS_both += ../utils/wpabuf.o
++OBJS_both += ../utils/eloop.o
 +OBJS_both += ../crypto/md5.o
 +OBJS_both += ../crypto/sha1.o
 +OBJS_both += ../crypto/sha1-tlsprf.o
@@ -93,7 +94,7 @@ index 3651056..58c067a 100644
 +OBJS_both += ../crypto/aes-omac1.o
 +OBJS_both += ../crypto/ms_funcs.o
 +OBJS_both += ../crypto/sha256.o
-+
++OBJS_both += ../crypto/random.o
 +
 +OBJS_both += ../eap_common/eap_peap_common.o
 +OBJS_both += ../eap_common/eap_psk_common.o
