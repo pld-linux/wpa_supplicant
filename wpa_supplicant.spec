@@ -6,17 +6,18 @@
 %bcond_without	dbus		# don't build D-BUS control interface
 %bcond_without	gui		# don't build gui
 %bcond_with	madwifi		# with madwifi support
-#
+
 # sync archlist with madwifi.spec
 %ifnarch %{x8664} arm %{ix86} mips ppc xscale
 %undefine	with_madwifi
 %endif
-#
+
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	1.0
-Release:	2
+# TODO: systemd post macros
+Release:	2.1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -24,13 +25,14 @@ Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Source3:	%{name}.tmpfiles
+Source4:	%{name}.service
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-OPTCFLAGS.patch
 Patch2:		%{name}-lrelease.patch
 # http://www.linuxwimax.org/Download
 Patch3:		%{name}-0.7.2-generate-libeap-peer.patch
 Patch4:		dbus-services.patch
-Patch5:		wpa_supplicant-1.0-wpagui-getopt.patch
+Patch5:		%{name}-1.0-wpagui-getopt.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel >= 1:3.2
@@ -38,15 +40,17 @@ BuildRequires:	libnl-devel >= 1:3.2
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.644
 %if %{with gui}
 BuildRequires:	QtGui-devel
-BuildRequires:	qt4-linguist
 BuildRequires:	qt4-build
+BuildRequires:	qt4-linguist
 BuildRequires:	qt4-qmake
 %endif
 BuildRequires:	readline-devel
 BuildRequires:	sed >= 4.0
 Requires:	rc-scripts >= 0.4.1.24
+Requires:	systemd-units >= 38
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -187,7 +191,7 @@ cd ../..
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_sbindir},%{_desktopdir},/var/run/%{name},%{_sysconfdir}} \
-	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
+	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},%{systemdunitdir}}
 
 install wpa_supplicant/wpa_cli $RPM_BUILD_ROOT%{_sbindir}
 install wpa_supplicant/wpa_passphrase $RPM_BUILD_ROOT%{_sbindir}
@@ -205,6 +209,7 @@ install wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/dbus-1/system.d,%{_datadir}/dbus-1/system-services}
 install wpa_supplicant/dbus/dbus-wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
 install wpa_supplicant/dbus/*.service $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services
+cp -p %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}/%{name}.service
 %endif
 
 %if %{with gui}
@@ -214,7 +219,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 
 install wpa_supplicant/eapol_test $RPM_BUILD_ROOT%{_bindir}
 
-install %{SOURCE3} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
+install %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 %{__make} -C src/eap_peer install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -236,7 +241,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/wpa_passphrase
 %attr(755,root,root) %{_sbindir}/wpa_supplicant
 %attr(750,root,root) %ghost %dir /var/run/%{name}
-/usr/lib/tmpfiles.d/%{name}.conf
+%{systemdtmpfilesdir}/%{name}.conf
 %{_mandir}/man5/wpa_supplicant.conf.5*
 %{_mandir}/man8/wpa_background.8*
 %{_mandir}/man8/wpa_cli.8*
@@ -246,6 +251,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/wpa_supplicant.conf
 %{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
 %{_datadir}/dbus-1/system-services/fi.w1.wpa_supplicant1.service
+%{systemdunitdir}/%{name}.service
 %endif
 
 %if %{with gui}
