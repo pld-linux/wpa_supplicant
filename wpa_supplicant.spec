@@ -158,6 +158,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 %{__make} -C wpa_supplicant \
 	V=1 \
 	CC="%{__cc}" \
+	BINDIR="%{_sbindir}" \
 	LDFLAGS="%{rpmldflags}" \
 	OPTCFLAGS="%{rpmcppflags} %{rpmcflags} $(pkg-config --cflags libnl-3.0)"
 
@@ -193,33 +194,32 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_sbindir},%{_desktopdir},/var/run/%{name},%{_sysconfdir}} \
 	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},%{systemdunitdir}}
 
-install wpa_supplicant/wpa_cli $RPM_BUILD_ROOT%{_sbindir}
-install wpa_supplicant/wpa_passphrase $RPM_BUILD_ROOT%{_sbindir}
-install wpa_supplicant/wpa_supplicant $RPM_BUILD_ROOT%{_sbindir}
+install -p wpa_supplicant/wpa_cli $RPM_BUILD_ROOT%{_sbindir}
+install -p wpa_supplicant/wpa_passphrase $RPM_BUILD_ROOT%{_sbindir}
+install -p wpa_supplicant/wpa_supplicant $RPM_BUILD_ROOT%{_sbindir}
 
-install wpa_supplicant/wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}
+cp -p wpa_supplicant/wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}
 
-install wpa_supplicant/doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
-install wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+cp -p wpa_supplicant/doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
+cp -p wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 # program exists with CONFIG_PRIVSEP only
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/wpa_priv.8
 
 %if %{with dbus}
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/dbus-1/system.d,%{_datadir}/dbus-1/system-services}
-install wpa_supplicant/dbus/dbus-wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
-install wpa_supplicant/dbus/*.service $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services
+cp -p wpa_supplicant/dbus/dbus-wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}/dbus-1/system.d/wpa_supplicant.conf
+cp -p wpa_supplicant/dbus/*.service $RPM_BUILD_ROOT%{_datadir}/dbus-1/system-services
 cp -p %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}/%{name}.service
 %endif
 
 %if %{with gui}
-install wpa_supplicant/wpa_gui-qt4/wpa_gui $RPM_BUILD_ROOT%{_bindir}
-install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
+install -p wpa_supplicant/wpa_gui-qt4/wpa_gui $RPM_BUILD_ROOT%{_bindir}
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/wpa_gui.desktop
 %endif
 
-install wpa_supplicant/eapol_test $RPM_BUILD_ROOT%{_bindir}
-
-install %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
+install -p wpa_supplicant/eapol_test $RPM_BUILD_ROOT%{_bindir}
+cp -p %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 %{__make} -C src/eap_peer install \
 	DESTDIR=$RPM_BUILD_ROOT \
