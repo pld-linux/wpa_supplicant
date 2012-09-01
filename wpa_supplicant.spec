@@ -17,7 +17,7 @@ Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	1.0
 # TODO: systemd post macros
-Release:	2.1
+Release:	2.2
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -142,7 +142,7 @@ Pliki programistyczne dla biblioteki eap.
 
 %{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
 
-install %{SOURCE1} wpa_supplicant/.config
+cp -p %{SOURCE1} wpa_supplicant/.config
 
 %if %{with dbus}
 echo 'CONFIG_CTRL_IFACE_DBUS=y' >> wpa_supplicant/.config
