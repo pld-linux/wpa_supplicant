@@ -16,8 +16,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	1.0
-# TODO: systemd post macros
-Release:	2.2
+Release:	3
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
@@ -40,7 +39,7 @@ BuildRequires:	libnl-devel >= 1:3.2
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.644
+BuildRequires:	rpmbuild(macros) >= 1.647
 %if %{with gui}
 BuildRequires:	QtGui-devel
 BuildRequires:	qt4-build
@@ -227,6 +226,16 @@ cp -p %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+%systemd_reload
+%systemd_service_restart wpa_supplicant.service
+
+%preun
+%systemd_preun wpa_supplicant.service
+
+%postun
+%systemd_reload
 
 %post	-n libeap -p /sbin/ldconfig
 %postun	-n libeap -p /sbin/ldconfig
