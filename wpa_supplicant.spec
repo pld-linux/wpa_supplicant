@@ -15,12 +15,12 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	1.0
-Release:	3
+Version:	1.1
+Release:	1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	8650f6aa23646ef634402552d0669640
+# Source0-md5:	b29b9af02d7e092db8c5c8508de0e45c
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Source3:	%{name}.tmpfiles
@@ -31,7 +31,6 @@ Patch2:		%{name}-lrelease.patch
 # http://www.linuxwimax.org/Download
 Patch3:		%{name}-0.7.2-generate-libeap-peer.patch
 Patch4:		dbus-services.patch
-Patch5:		%{name}-1.0-wpagui-getopt.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel >= 1:3.2
@@ -137,7 +136,6 @@ Pliki programistyczne dla biblioteki eap.
 %patch2 -p0
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 
 %{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
 
