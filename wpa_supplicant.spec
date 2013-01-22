@@ -15,12 +15,12 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	1.1
-Release:	2
+Version:	2.0
+Release:	1
 License:	GPL v2
 Group:		Networking
 Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	b29b9af02d7e092db8c5c8508de0e45c
+# Source0-md5:	3be2ebfdcced52e00eda0afe2889839d
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Source3:	%{name}.tmpfiles
@@ -157,7 +157,7 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 	CC="%{__cc}" \
 	BINDIR="%{_sbindir}" \
 	LDFLAGS="%{rpmldflags}" \
-	OPTCFLAGS="%{rpmcppflags} %{rpmcflags} $(pkg-config --cflags libnl-3.0)"
+	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
 
 # eapol_test:
 %{__make} -C wpa_supplicant eapol_test \
@@ -168,23 +168,22 @@ echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 
 %if %{with gui}
 cd wpa_supplicant/wpa_gui-qt4
-qmake-qt4 -o Makefile wpa_gui.pro
+qmake-qt4 -o Makefile wpa_gui.pro \
+	QMAKE_CXX="%{__cxx}" \
+	QMAKE_CXXFLAGS_RELEASE="%{rpmcxxflags}" \
+	QMAKE_LFLAGS_RELEASE="%{rpmldflags}"
 cd ../..
 %{__make} -C wpa_supplicant wpa_gui-qt4 \
 	V=1 \
 	QTDIR=%{_libdir}/qt4 \
-	UIC=%{_bindir}/uic-qt4 \
-	CC="%{__cc}" \
-	CXX="%{__cxx}" \
-	LDFLAGS="%{rpmldflags}" \
-	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
+	UIC=%{_bindir}/uic-qt4
 %endif
 
 %{__make} -C src/eap_peer clean
 %{__make} -C src/eap_peer \
 	CC="%{__cc}" \
-	LDFLAGS="%{rpmldflags} -shared" \
-	OPTCFLAGS="%{rpmcppflags} %{rpmcflags}"
+	CFLAGS="%{rpmcppflags} %{rpmcflags} -MMD -Wall $(pkg-config --cflags libnl-3.0)" \
+	LDFLAGS="%{rpmldflags} -shared"
 
 %install
 rm -rf $RPM_BUILD_ROOT

@@ -42,7 +42,7 @@ diff --git a/src/eap_peer/Makefile b/src/eap_peer/Makefile
 index 3651056..58c067a 100644
 --- a/src/eap_peer/Makefile
 +++ b/src/eap_peer/Makefile
-@@ -1,11 +1,188 @@
+@@ -1,11 +1,190 @@
 -all:
 -	@echo Nothing to be made.
 +LIBEAP_NAME = libeap
@@ -85,7 +85,9 @@ index 3651056..58c067a 100644
 +OBJS_both += ../utils/wpabuf.o
 +OBJS_both += ../utils/eloop.o
 +OBJS_both += ../crypto/md5.o
++ifneq ($(CONFIG_TLS), openssl)
 +OBJS_both += ../crypto/sha1.o
++endif
 +OBJS_both += ../crypto/sha1-tlsprf.o
 +OBJS_both += ../crypto/aes-encblock.o
 +OBJS_both += ../crypto/aes-wrap.o
@@ -210,15 +212,15 @@ index 3651056..58c067a 100644
 +
 +#	copy the headers reqd by apps using eap peer library in its own subfolder under /usr/include
 +	mkdir -p \
-+		$(DESTDIR)/$(INCLUDE_INSTALL_DIR)/eap_common \
-+		$(DESTDIR)/$(INCLUDE_INSTALL_DIR)/common \
-+		$(DESTDIR)/$(INCLUDE_INSTALL_DIR)/util \
-+		$(DESTDIR)/$(INCLUDE_INSTALL_DIR)/crypto
-+	install -m 0644 $(EAP_COMMON_HEADERS) $(DESTDIR)/$(INCLUDE_INSTALL_DIR)/eap_common
-+	install -m 0644 $(COMMON_HEADERS) $(DESTDIR)/$(INCLUDE_INSTALL_DIR)/common
-+	install -m 0644 $(CRYPTO_HEADERS) $(DESTDIR)/$(INCLUDE_INSTALL_DIR)/crypto
-+	install -m 0644 $(UTIL_HEADERS) $(DESTDIR)/$(INCLUDE_INSTALL_DIR)/util
-+	install -m 0644 $(MAIN_HEADERS) $(DESTDIR)/$(INCLUDE_INSTALL_DIR)/
++		$(DESTDIR)$(INCLUDE_INSTALL_DIR)/eap_common \
++		$(DESTDIR)$(INCLUDE_INSTALL_DIR)/common \
++		$(DESTDIR)$(INCLUDE_INSTALL_DIR)/util \
++		$(DESTDIR)$(INCLUDE_INSTALL_DIR)/crypto
++	install -m 0644 $(EAP_COMMON_HEADERS) $(DESTDIR)$(INCLUDE_INSTALL_DIR)/eap_common
++	install -m 0644 $(COMMON_HEADERS) $(DESTDIR)$(INCLUDE_INSTALL_DIR)/common
++	install -m 0644 $(CRYPTO_HEADERS) $(DESTDIR)$(INCLUDE_INSTALL_DIR)/crypto
++	install -m 0644 $(UTIL_HEADERS) $(DESTDIR)$(INCLUDE_INSTALL_DIR)/util
++	install -m 0644 $(MAIN_HEADERS) $(DESTDIR)$(INCLUDE_INSTALL_DIR)/
 +
 +	mkdir -p $(DESTDIR)$(LIBDIR)/pkgconfig
 +	cp libeap0.pc $(DESTDIR)$(LIBDIR)/pkgconfig
@@ -226,7 +228,7 @@ index 3651056..58c067a 100644
 +uninstall: 
 +
 +	rm $(DESTDIR)$(LIBDIR)/$(LIBEAP)
-+	rm -fr $(DESTDIR)/$(INCLUDE_INSTALL_DIR)
++	rm -fr $(DESTDIR)$(INCLUDE_INSTALL_DIR)
 +	rm -f $(DESTDIR)$(LIBDIR)/pkgconfig/libeap0.pc
  
  clean:
