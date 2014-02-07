@@ -232,7 +232,7 @@ index 3651056..58c067a 100644
 +	rm -f $(DESTDIR)$(LIBDIR)/pkgconfig/libeap0.pc
  
  clean:
--	rm -f *~ *.o *.so *.d
+-	rm -f *~ *.o *.so *.d *.gcno *.gcda *.gcov
 +	rm -f *~ *.o *.so *.d libeap.a $(LIBEAP) $(OBJS_lib)
  
 -install:
