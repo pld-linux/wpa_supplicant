@@ -5,12 +5,6 @@
 # Conditional build
 %bcond_without	dbus		# don't build D-BUS control interface
 %bcond_without	gui		# don't build gui
-%bcond_with	madwifi		# with madwifi support
-
-# sync archlist with madwifi.spec
-%ifnarch %{x8664} arm %{ix86} mips ppc xscale
-%undefine	with_madwifi
-%endif
 
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
@@ -34,7 +28,6 @@ Patch4:		dbus-services.patch
 URL:		http://hostap.epitest.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel >= 1:3.2
-%{?with_madwifi:BuildRequires:	madwifi-devel}
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
@@ -145,10 +138,6 @@ cp -p %{SOURCE1} wpa_supplicant/.config
 echo 'CONFIG_CTRL_IFACE_DBUS=y' >> wpa_supplicant/.config
 echo 'CONFIG_CTRL_IFACE_DBUS_NEW=y' >> wpa_supplicant/.config
 echo 'CONFIG_CTRL_IFACE_DBUS_INTRO=y' >> wpa_supplicant/.config
-%endif
-
-%if %{with madwifi}
-echo 'CONFIG_DRIVER_MADWIFI=y' >> wpa_supplicant/.config
 %endif
 
 %build
