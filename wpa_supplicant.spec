@@ -13,7 +13,7 @@ Version:	2.5
 Release:	1
 License:	GPL v2
 Group:		Networking
-Source0:	http://hostap.epitest.fi/releases/%{name}-%{version}.tar.gz
+Source0:	http://w1.fi/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	96ff75c3a514f1f324560a2376f13110
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
@@ -25,7 +25,7 @@ Patch2:		%{name}-lrelease.patch
 # http://www.linuxwimax.org/Download
 Patch3:		%{name}-0.7.2-generate-libeap-peer.patch
 Patch4:		dbus-services.patch
-URL:		http://hostap.epitest.fi/wpa_supplicant/
+URL:		http://w1.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel >= 1:3.2
 BuildRequires:	ncurses-devel
