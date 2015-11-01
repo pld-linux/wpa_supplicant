@@ -42,9 +42,8 @@ diff --git a/src/eap_peer/Makefile b/src/eap_peer/Makefile
 index 3651056..58c067a 100644
 --- a/src/eap_peer/Makefile
 +++ b/src/eap_peer/Makefile
-@@ -1,11 +1,190 @@
--all:
--	@echo Nothing to be made.
+@@ -1,23 +1,193 @@
+-all: libeap_peer.a
 +LIBEAP_NAME = libeap
 +LIBEAP_CURRENT = 0
 +LIBEAP_REVISION = 0
@@ -84,13 +83,15 @@ index 3651056..58c067a 100644
 +OBJS_both += ../utils/base64.o
 +OBJS_both += ../utils/wpabuf.o
 +OBJS_both += ../utils/eloop.o
-+OBJS_both += ../crypto/md5.o
 +ifneq ($(CONFIG_TLS), openssl)
++OBJS_both += ../crypto/md5.o
 +OBJS_both += ../crypto/sha1.o
 +endif
 +OBJS_both += ../crypto/sha1-tlsprf.o
 +OBJS_both += ../crypto/aes-encblock.o
++ifneq ($(CONFIG_TLS), openssl)
 +OBJS_both += ../crypto/aes-wrap.o
++endif
 +OBJS_both += ../crypto/aes-ctr.o
 +OBJS_both += ../crypto/aes-eax.o
 +OBJS_both += ../crypto/aes-omac1.o
@@ -143,6 +144,7 @@ index 3651056..58c067a 100644
 +override CFLAGS += -DEAP_TLS_OPENSSL
 +OBJS_both += ../crypto/tls_openssl.o
 +OBJS_both += ../crypto/crypto_openssl.o
++OBJS_both += ../crypto/sha256-tlsprf.o
 +LIBS += -lssl -lcrypto
 +override CFLAGS += -DINTERNAL_SHA256
 +endif
@@ -232,15 +234,27 @@ index 3651056..58c067a 100644
 +	rm -f $(DESTDIR)$(LIBDIR)/pkgconfig/libeap0.pc
  
  clean:
--	rm -f *~ *.o *.so *.d *.gcno *.gcda *.gcov
-+	rm -f *~ *.o *.so *.d libeap.a $(LIBEAP) $(OBJS_lib)
- 
+-	rm -f *~ *.o *.so *.d *.gcno *.gcda *.gcov libeap_peer.a
+-
 -install:
 -	if ls *.so >/dev/null 2>&1; then \
 -		install -d $(DESTDIR)$(LIBDIR)/wpa_supplicant && \
 -		cp *.so $(DESTDIR)$(LIBDIR)/wpa_supplicant \
 -	; fi
-+-include $(OBJS:%.o=%.d)
+-
+-include ../lib.rules
+-
+-CFLAGS += -DIEEE8021X_EAPOL
+-
+-LIB_OBJS= \
+-	eap.o \
+-	eap_methods.o
+-
+-libeap_peer.a: $(LIB_OBJS)
+-	$(AR) crT $@ $?
++	rm -f *~ *.o *.so *.d *.gcno *.gcda *.gcov libeap.a $(LIBEAP) $(OBJS_lib)
+ 
+ -include $(OBJS:%.o=%.d)
 diff --git a/src/eap_peer/eap_methods.c b/src/eap_peer/eap_methods.c
 index 3b0af05..092f266 100644
 --- a/src/eap_peer/eap_methods.c
