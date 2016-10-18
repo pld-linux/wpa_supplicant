@@ -10,7 +10,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	2.5
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Networking
 Source0:	http://w1.fi/releases/%{name}-%{version}.tar.gz
