@@ -3,15 +3,17 @@
 # - icon for wpa_gui
 #
 # Conditional build
-%bcond_without	dbus		# don't build D-BUS control interface
-%bcond_without	gui		# don't build gui
+%bcond_without	dbus		# D-BUS control interface
+%bcond_without	gui		# GUI (wpa_gui) package
+%bcond_with	pcsc		# PC/SC support for smartcards
+%bcond_with	qt5		# use Qt 5 instead of Qt 4
 
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	2.6
 Release:	1
-License:	GPL v2
+License:	BSD
 Group:		Networking
 Source0:	http://w1.fi/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	091569eb4440b7d7f2b4276dbfc03c3c
@@ -30,19 +32,30 @@ URL:		http://w1.fi/wpa_supplicant/
 BuildRequires:	libnl-devel >= 1:3.2
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
+%{?with_pcsc:BuildRequires:	pcsc-lite-devel}
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.647
 %if %{with gui}
-BuildRequires:	QtGui-devel
-BuildRequires:	qt4-build
-BuildRequires:	qt4-linguist
-BuildRequires:	qt4-qmake
+%if %{with qt5}
+BuildRequires:	Qt5Gui-devel >= 5
+BuildRequires:	Qt5Widgets-devel >= 5
+BuildRequires:	qt5-build >= 5
+BuildRequires:	qt5-linguist >= 5
+BuildRequires:	qt5-qmake >= 5
+%else
+BuildRequires:	QtGui-devel >= 4
+BuildRequires:	qt4-build >= 4
+BuildRequires:	qt4-linguist >= 4
+BuildRequires:	qt4-qmake >= 4
+%endif
 %endif
 BuildRequires:	readline-devel
 BuildRequires:	sed >= 4.0
 Requires:	rc-scripts >= 0.4.1.24
 Requires:	systemd-units >= 38
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		qtver	%{?with_qt5:5}%{!?with_qt5:4}
 
 %description
 wpa_supplicant is a WPA Supplicant with support for WPA and WPA2 (IEEE
@@ -140,6 +153,13 @@ echo 'CONFIG_CTRL_IFACE_DBUS_NEW=y' >> wpa_supplicant/.config
 echo 'CONFIG_CTRL_IFACE_DBUS_INTRO=y' >> wpa_supplicant/.config
 %endif
 
+%if %{with pcsc}
+echo 'CONFIG_PCSC=y' >> wpa_supplicant/.config
+echo 'CONFIG_EAP_SIM=y' >> wpa_supplicant/.config
+echo 'CONFIG_EAP_AKA=y' >> wpa_supplicant/.config
+echo 'CONFIG_EAP_AKA_PRIME=y' >> wpa_supplicant/.config
+%endif
+
 %build
 %{__make} -C wpa_supplicant \
 	V=1 \
@@ -157,15 +177,15 @@ echo 'CONFIG_CTRL_IFACE_DBUS_INTRO=y' >> wpa_supplicant/.config
 
 %if %{with gui}
 cd wpa_supplicant/wpa_gui-qt4
-qmake-qt4 -o Makefile wpa_gui.pro \
+qmake-qt%{qtver} -o Makefile wpa_gui.pro \
 	QMAKE_CXX="%{__cxx}" \
 	QMAKE_CXXFLAGS_RELEASE="%{rpmcxxflags}" \
 	QMAKE_LFLAGS_RELEASE="%{rpmldflags}"
 cd ../..
 %{__make} -C wpa_supplicant wpa_gui-qt4 \
 	V=1 \
-	QTDIR=%{_libdir}/qt4 \
-	UIC=%{_bindir}/uic-qt4
+	QTDIR=%{_libdir}/qt%{qtver} \
+	UIC=%{_bindir}/uic-qt%{qtver}
 %endif
 
 %{__make} -C src/eap_peer clean
@@ -228,8 +248,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc wpa_supplicant/{ChangeLog,README,eap_testing.txt,todo.txt}
-%doc wpa_supplicant/{*wpa_supplicant.conf,examples}
+%doc COPYING wpa_supplicant/{ChangeLog,README,README-{HS20,P2P,WPS},eap_testing.txt,todo.txt,*wpa_supplicant.conf,examples}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_bindir}/eapol_test
 %attr(755,root,root) %{_sbindir}/wpa_cli
