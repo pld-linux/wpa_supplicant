@@ -12,7 +12,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	2.6
-Release:	1
+Release:	2
 License:	BSD
 Group:		Networking
 Source0:	http://w1.fi/releases/%{name}-%{version}.tar.gz
@@ -27,6 +27,14 @@ Patch2:		%{name}-lrelease.patch
 # http://www.linuxwimax.org/Download
 Patch3:		%{name}-0.7.2-generate-libeap-peer.patch
 Patch4:		dbus-services.patch
+Patch5:		0001-hostapd-Avoid-key-reinstallation-in-FT-handshake.patch
+Patch6:		0002-Prevent-reinstallation-of-an-already-in-use-group-ke.patch
+Patch7:		0003-Extend-protection-of-GTK-IGTK-reinstallation-of-WNM-.patch
+Patch8:		0004-Prevent-installation-of-an-all-zero-TK.patch
+Patch9:		0005-Fix-PTK-rekeying-to-generate-a-new-ANonce.patch
+Patch10:	0006-TDLS-Reject-TPK-TK-reconfiguration.patch
+Patch11:	0007-WNM-Ignore-WNM-Sleep-Mode-Response-without-pending-r.patch
+Patch12:	0008-FT-Do-not-allow-multiple-Reassociation-Response-fram.patch
 URL:		http://w1.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel >= 1:3.2
@@ -142,6 +150,13 @@ Pliki programistyczne dla biblioteki eap.
 %patch2 -p0
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
 
 %{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
 
