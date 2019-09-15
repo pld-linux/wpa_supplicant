@@ -6,13 +6,13 @@
 %bcond_without	dbus		# D-BUS control interface
 %bcond_without	gui		# GUI (wpa_gui) package
 %bcond_with	pcsc		# PC/SC support for smartcards
-%bcond_with	qt5		# use Qt 5 instead of Qt 4
+%bcond_without	qt5		# use Qt 5 instead of Qt 4
 
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	2.6
-Release:	3
+Release:	4
 License:	BSD
 Group:		Networking
 Source0:	http://w1.fi/releases/%{name}-%{version}.tar.gz
@@ -35,6 +35,7 @@ Patch9:		0005-Fix-PTK-rekeying-to-generate-a-new-ANonce.patch
 Patch10:	0006-TDLS-Reject-TPK-TK-reconfiguration.patch
 Patch11:	0007-WNM-Ignore-WNM-Sleep-Mode-Response-without-pending-r.patch
 Patch12:	0008-FT-Do-not-allow-multiple-Reassociation-Response-fram.patch
+Patch13:	%{name}-lrelease5.patch
 URL:		http://w1.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
 BuildRequires:	libnl-devel >= 1:3.2
@@ -48,7 +49,7 @@ BuildRequires:	rpmbuild(macros) >= 1.647
 BuildRequires:	Qt5Gui-devel >= 5
 BuildRequires:	Qt5Widgets-devel >= 5
 BuildRequires:	qt5-build >= 5
-BuildRequires:	qt5-linguist >= 5
+BuildRequires:	qt5-linguist >= 5.13.0-3
 BuildRequires:	qt5-qmake >= 5
 %else
 BuildRequires:	QtGui-devel >= 4
@@ -147,7 +148,9 @@ Pliki programistyczne dla biblioteki eap.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%if %{without qt5}
 %patch2 -p0
+%endif
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
@@ -157,6 +160,10 @@ Pliki programistyczne dla biblioteki eap.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
+%if %{with qt5}
+%patch13 -p0
+%endif
 
 %{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
 
