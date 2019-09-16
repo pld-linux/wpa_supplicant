@@ -185,7 +185,7 @@ cd ../..
 %{__make} -C wpa_supplicant wpa_gui-qt4 \
 	V=1 \
 	QTDIR=%{_libdir}/qt%{qtver} \
-	QMAKE='qmake-qt5' \
+	QMAKE='qmake-qt%{qtver}' \
 	LRELEASE='%{_libdir}/qt%{qtver}/bin/lrelease' \
 	UIC=%{_bindir}/uic-qt%{qtver}
 %endif
