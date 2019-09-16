@@ -11,34 +11,25 @@
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	2.6
-Release:	4
+Version:	2.9
+Release:	1
 License:	BSD
 Group:		Networking
 Source0:	http://w1.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	091569eb4440b7d7f2b4276dbfc03c3c
+# Source0-md5:	2d2958c782576dc9901092fbfecb4190
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Source3:	%{name}.tmpfiles
 Source4:	%{name}.service
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-OPTCFLAGS.patch
-Patch2:		%{name}-lrelease.patch
+Patch2:		%{name}-gui-qt4.patch
 # http://www.linuxwimax.org/Download
 Patch3:		%{name}-0.7.2-generate-libeap-peer.patch
 Patch4:		dbus-services.patch
-Patch5:		0001-hostapd-Avoid-key-reinstallation-in-FT-handshake.patch
-Patch6:		0002-Prevent-reinstallation-of-an-already-in-use-group-ke.patch
-Patch7:		0003-Extend-protection-of-GTK-IGTK-reinstallation-of-WNM-.patch
-Patch8:		0004-Prevent-installation-of-an-all-zero-TK.patch
-Patch9:		0005-Fix-PTK-rekeying-to-generate-a-new-ANonce.patch
-Patch10:	0006-TDLS-Reject-TPK-TK-reconfiguration.patch
-Patch11:	0007-WNM-Ignore-WNM-Sleep-Mode-Response-without-pending-r.patch
-Patch12:	0008-FT-Do-not-allow-multiple-Reassociation-Response-fram.patch
-Patch13:	%{name}-lrelease5.patch
 URL:		http://w1.fi/wpa_supplicant/
 %{?with_dbus:BuildRequires:	dbus-devel}
-BuildRequires:	libnl-devel >= 1:3.2
+BuildRequires:	libnl-devel >= 1:3.5
 BuildRequires:	ncurses-devel
 BuildRequires:	openssl-devel
 %{?with_pcsc:BuildRequires:	pcsc-lite-devel}
@@ -148,22 +139,9 @@ Pliki programistyczne dla biblioteki eap.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%if %{without qt5}
-%patch2 -p0
-%endif
+%patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%if %{with qt5}
-%patch13 -p0
-%endif
 
 %{__sed} -i -e 's,@LIB@,%{_lib},' src/eap_peer/libeap0.pc
 
@@ -207,13 +185,15 @@ cd ../..
 %{__make} -C wpa_supplicant wpa_gui-qt4 \
 	V=1 \
 	QTDIR=%{_libdir}/qt%{qtver} \
+	QMAKE='qmake-qt5' \
+	LRELEASE='%{_libdir}/qt%{qtver}/bin/lrelease' \
 	UIC=%{_bindir}/uic-qt%{qtver}
 %endif
 
 %{__make} -C src/eap_peer clean
 %{__make} -C src/eap_peer \
 	CC="%{__cc}" \
-	CFLAGS="%{rpmcppflags} %{rpmcflags} -MMD -Wall $(pkg-config --cflags libnl-3.0)" \
+	CFLAGS="%{rpmcppflags} %{rpmcflags} -MMD -Wall $(pkg-config --cflags libnl-3.0) -DTLS_DEFAULT_CIPHERS=\\\"PROFILE=SYSTEM:3DES\\\"" \
 	LDFLAGS="%{rpmldflags} -shared"
 
 %install
@@ -286,7 +266,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/wpa_supplicant.8*
 %if %{with dbus}
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/wpa_supplicant.conf
-%{_datadir}/dbus-1/system-services/fi.epitest.hostap.WPASupplicant.service
 %{_datadir}/dbus-1/system-services/fi.w1.wpa_supplicant1.service
 %{systemdunitdir}/%{name}.service
 %endif

@@ -1,14 +1,5 @@
---- wpa_supplicant-1.0/wpa_supplicant/dbus/fi.epitest.hostap.WPASupplicant.service.in.orig	2012-05-09 23:56:09.000000000 +0200
-+++ wpa_supplicant-1.0/wpa_supplicant/dbus/fi.epitest.hostap.WPASupplicant.service.in	2012-05-22 17:20:59.393121919 +0200
-@@ -1,5 +1,5 @@
- [D-BUS Service]
- Name=fi.epitest.hostap.WPASupplicant
--Exec=@BINDIR@/wpa_supplicant -u
-+Exec=@BINDIR@/wpa_supplicant -c /etc/wpa_supplicant.conf -u
- User=root
- SystemdService=wpa_supplicant.service
---- wpa_supplicant-1.0/wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service.in.orig	2012-05-09 23:56:09.000000000 +0200
-+++ wpa_supplicant-1.0/wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service.in	2012-05-22 17:21:31.359787249 +0200
+--- a/wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service.in.orig	2012-05-09 23:56:09.000000000 +0200
++++ b/wpa_supplicant/dbus/fi.w1.wpa_supplicant1.service.in	2012-05-22 17:21:31.359787249 +0200
 @@ -1,5 +1,5 @@
  [D-BUS Service]
  Name=fi.w1.wpa_supplicant1
