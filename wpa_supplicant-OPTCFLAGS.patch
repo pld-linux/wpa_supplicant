@@ -1,7 +1,7 @@
-diff -Nur wpa_supplicant-0.5.4/wpa_supplicant/Makefile wpa_supplicant-0.5.4.OPTCFLAGS/wpa_supplicant/Makefile
---- wpa_supplicant-0.5.4/wpa_supplicant/Makefile	2006-08-03 19:30:41.000000000 +0000
-+++ wpa_supplicant-0.5.4.OPTCFLAGS/wpa_supplicant/Makefile	2006-08-03 19:30:42.000000000 +0000
-@@ -3,7 +3,7 @@
+diff -urNp -x '*.orig' wpa_supplicant-2.9.org/wpa_supplicant/Makefile wpa_supplicant-2.9/wpa_supplicant/Makefile
+--- wpa_supplicant-2.9.org/wpa_supplicant/Makefile	2021-09-26 23:01:54.976837708 +0200
++++ wpa_supplicant-2.9/wpa_supplicant/Makefile	2021-09-26 23:01:55.070171269 +0200
+@@ -3,7 +3,7 @@ CC=gcc
  endif
  
  ifndef CFLAGS
@@ -9,4 +9,4 @@ diff -Nur wpa_supplicant-0.5.4/wpa_supplicant/Makefile wpa_supplicant-0.5.4.OPTC
 +CFLAGS = -MMD $(OPTCFLAGS) -Wall -g
  endif
  
- # Include directories for CVS version
+ ifdef LIBS

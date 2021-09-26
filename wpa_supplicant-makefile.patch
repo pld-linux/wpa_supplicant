@@ -1,17 +1,18 @@
---- wpa_supplicant-1.0/wpa_supplicant/Makefile.orig	2012-05-09 23:56:09.000000000 +0200
-+++ wpa_supplicant-1.0/wpa_supplicant/Makefile	2012-05-22 17:15:38.836468705 +0200
-@@ -53,6 +53,8 @@
+diff -urNp -x '*.orig' wpa_supplicant-2.9.org/wpa_supplicant/Makefile wpa_supplicant-2.9/wpa_supplicant/Makefile
+--- wpa_supplicant-2.9.org/wpa_supplicant/Makefile	2019-08-07 15:25:25.000000000 +0200
++++ wpa_supplicant-2.9/wpa_supplicant/Makefile	2021-09-26 23:01:54.840170708 +0200
+@@ -84,6 +84,8 @@ $(DESTDIR)$(BINDIR)/%: %
  	install -D $(<) $(@)
  
  install: $(addprefix $(DESTDIR)$(BINDIR)/,$(BINALL))
 +	mkdir -p $(DESTDIR)/etc
 +	cp wpa_supplicant.conf $(DESTDIR)/etc
  	$(MAKE) -C ../src install
- 
- OBJS = config.o
-@@ -1483,6 +1483,8 @@
+ ifdef CONFIG_BUILD_WPA_CLIENT_SO
+ 	install -m 0644 -D libwpa_client.so $(DESTDIR)/$(LIBDIR)/libwpa_client.so
+@@ -2024,6 +2026,8 @@ wpa_gui-qt4/Makefile:
  wpa_gui-qt4/lang/wpa_gui_de.qm: wpa_gui-qt4/lang/wpa_gui_de.ts
- 	lrelease-qt4 wpa_gui-qt4/wpa_gui.pro
+ 	lrelease wpa_gui-qt4/wpa_gui.pro
  
 +.PHONY: wpa_gui-qt4
 +
