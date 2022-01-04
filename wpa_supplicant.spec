@@ -236,8 +236,7 @@ cp -p %{SOURCE3} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%systemd_reload
-%systemd_service_restart wpa_supplicant.service
+%systemd_post wpa_supplicant.service
 
 %preun
 %systemd_preun wpa_supplicant.service
