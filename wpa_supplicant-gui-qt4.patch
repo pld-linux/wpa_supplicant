@@ -9,11 +9,10 @@ different locations.
  wpa_supplicant/Makefile | 7 +++++--
  1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff -urNp -x '*.orig' wpa_supplicant-2.9.org/wpa_supplicant/Makefile wpa_supplicant-2.9/wpa_supplicant/Makefile
---- wpa_supplicant-2.9.org/wpa_supplicant/Makefile	2021-09-26 23:01:55.206838269 +0200
-+++ wpa_supplicant-2.9/wpa_supplicant/Makefile	2021-09-26 23:01:55.293505147 +0200
-@@ -22,6 +22,9 @@ export INCDIR ?= /usr/local/include/
- export BINDIR ?= /usr/local/sbin/
+--- wpa_supplicant-2.10/wpa_supplicant/Makefile.orig	2023-10-25 20:25:14.325031717 +0200
++++ wpa_supplicant-2.10/wpa_supplicant/Makefile	2023-10-25 20:32:58.929181407 +0200
+@@ -35,6 +35,9 @@ export INCDIR ?= /usr/local/include
+ export BINDIR ?= /usr/local/sbin
  PKG_CONFIG ?= pkg-config
  
 +QMAKE ?= qmake
@@ -22,7 +21,7 @@ diff -urNp -x '*.orig' wpa_supplicant-2.9.org/wpa_supplicant/Makefile wpa_suppli
  CFLAGS += $(EXTRA_CFLAGS)
  CFLAGS += -I$(abspath ../src)
  CFLAGS += -I$(abspath ../src/utils)
-@@ -2021,10 +2024,10 @@ wpa_gui:
+@@ -2044,10 +2047,10 @@ wpa_gui:
  	@echo "wpa_gui has been removed - see wpa_gui-qt4 for replacement"
  
  wpa_gui-qt4/Makefile:

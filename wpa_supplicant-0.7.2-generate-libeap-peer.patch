@@ -38,12 +38,9 @@ Signed-off-by: Inaky Perez-Gonzalez <inaky.perez-gonzalez@intel.com>
  5 files changed, 320 insertions(+), 8 deletions(-)
  create mode 100644 src/eap_peer/libeap0.pc
 
-diff --git a/src/eap_peer/Makefile b/src/eap_peer/Makefile
-index 3651056..58c067a 100644
---- a/src/eap_peer/Makefile
-+++ b/src/eap_peer/Makefile
-@@ -1,23 +1,193 @@
--all: libeap_peer.a
+--- wpa_supplicant-2.10/src/eap_peer/Makefile.libeap.orig	1970-01-01 01:00:00.000000000 +0100
++++ wpa_supplicant-2.10/src/eap_peer/Makefile.libeap	2023-10-25 20:38:09.894163431 +0200
+@@ -0,0 +1,193 @@
 +LIBEAP_NAME = libeap
 +LIBEAP_CURRENT = 0
 +LIBEAP_REVISION = 0
@@ -232,29 +229,11 @@ index 3651056..58c067a 100644
 +	rm $(DESTDIR)$(LIBDIR)/$(LIBEAP)
 +	rm -fr $(DESTDIR)$(INCLUDE_INSTALL_DIR)
 +	rm -f $(DESTDIR)$(LIBDIR)/pkgconfig/libeap0.pc
- 
- clean:
--	rm -f *~ *.o *.so *.d *.gcno *.gcda *.gcov libeap_peer.a
--
--install:
--	if ls *.so >/dev/null 2>&1; then \
--		install -d $(DESTDIR)$(LIBDIR)/wpa_supplicant && \
--		cp *.so $(DESTDIR)$(LIBDIR)/wpa_supplicant \
--	; fi
--
--include ../lib.rules
--
--CFLAGS += -DIEEE8021X_EAPOL
--
--LIB_OBJS= \
--	eap.o \
--	eap_methods.o
--
--libeap_peer.a: $(LIB_OBJS)
--	$(AR) crT $@ $?
++
++clean:
 +	rm -f *~ *.o *.so *.d *.gcno *.gcda *.gcov libeap.a $(LIBEAP) $(OBJS_lib)
- 
- -include $(OBJS:%.o=%.d)
++
++-include $(OBJS:%.o=%.d)
 diff --git a/src/eap_peer/eap_methods.c b/src/eap_peer/eap_methods.c
 index 3b0af05..092f266 100644
 --- a/src/eap_peer/eap_methods.c
@@ -380,12 +359,10 @@ index 3b0af05..092f266 100644
   * eap_peer_unregister_methods - Unregister EAP peer methods
   *
   * This function is called at program termination to unregister all EAP peer
-diff --git a/src/eap_peer/eap_methods.h b/src/eap_peer/eap_methods.h
-index 384c61b..b83a46f 100644
---- a/src/eap_peer/eap_methods.h
-+++ b/src/eap_peer/eap_methods.h
-@@ -32,6 +32,7 @@ EapType eap_peer_get_type(const char *name, int *vendor);
- const char * eap_get_name(int vendor, EapType type);
+--- wpa_supplicant-2.10/src/eap_peer/eap_methods.h.orig	2023-10-25 21:12:58.396182379 +0200
++++ wpa_supplicant-2.10/src/eap_peer/eap_methods.h	2023-10-25 21:15:46.048607461 +0200
+@@ -27,6 +27,7 @@ enum eap_type eap_peer_get_type(const ch
+ const char * eap_get_name(int vendor, enum eap_type type);
  size_t eap_get_names(char *buf, size_t buflen);
  char ** eap_get_names_as_string_array(size_t *num);
 +int eap_peer_register_methods(void);
