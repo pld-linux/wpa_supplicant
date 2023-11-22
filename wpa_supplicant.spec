@@ -220,6 +220,7 @@ cp -p wpa_supplicant/wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}
 cp -p wpa_supplicant/doc/docbook/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
 cp -p wpa_supplicant/doc/docbook/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
+%{!?with_gui:%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/wpa_gui.8}
 # program exists with CONFIG_PRIVSEP only
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/wpa_priv.8
 
