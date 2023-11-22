@@ -12,7 +12,7 @@ Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
 Version:	2.10
-Release:	1
+Release:	2
 License:	BSD
 Group:		Networking
 Source0:	http://w1.fi/releases/%{name}-%{version}.tar.gz
@@ -52,6 +52,7 @@ BuildRequires:	readline-devel
 BuildRequires:	sed >= 4.0
 Requires:	rc-scripts >= 0.4.1.24
 Requires:	systemd-units >= 38
+Suggests:	%{name}-utils = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		qtver	%{?with_qt5:5}%{!?with_qt5:4}
@@ -98,6 +99,16 @@ Obsługiwane możliwości WPA/IEEE 802.11i:
   mogą być używane przez zewnętrzny program - Xsupplicant)
 - zarządzanie kluczy dla CCMP, TKIP, WEP104, WEP40
 - RSN/WPA2 (IEEE 802.11i)
+
+%package utils
+Summary:	wpa_supplicant utilities
+Summary(pl.UTF-8):	Narzędzia dla wpa_supplicant
+
+%description utils
+wpa_supplicant utilities.
+
+%description utils -l pl.UTF-8
+Narzędzia dla wpa_supplicant.
 
 %package -n wpa_gui
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
@@ -251,7 +262,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %attr(755,root,root) %{_bindir}/eapol_test
 %attr(755,root,root) %{_sbindir}/wpa_cli
-%attr(755,root,root) %{_sbindir}/wpa_passphrase
 %attr(755,root,root) %{_sbindir}/wpa_supplicant
 %attr(750,root,root) %ghost %dir /var/run/%{name}
 %{systemdtmpfilesdir}/%{name}.conf
@@ -259,13 +269,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/eapol_test.8*
 %{_mandir}/man8/wpa_background.8*
 %{_mandir}/man8/wpa_cli.8*
-%{_mandir}/man8/wpa_passphrase.8*
 %{_mandir}/man8/wpa_supplicant.8*
 %if %{with dbus}
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/wpa_supplicant.conf
 %{_datadir}/dbus-1/system-services/fi.w1.wpa_supplicant1.service
 %{systemdunitdir}/%{name}.service
 %endif
+
+%files utils
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_sbindir}/wpa_passphrase
+%{_mandir}/man8/wpa_passphrase.8*
 
 %if %{with gui}
 %files -n wpa_gui
