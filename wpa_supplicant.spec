@@ -114,6 +114,7 @@ Narzędzia dla wpa_supplicant.
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant GUI
 Summary(pl.UTF-8):	Graficzny interfejs suplikanta WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Group:		X11/Applications/Networking
+Requires(post,postun):	desktop-file-utils
 Requires:	%{name} = %{version}-%{release}
 
 %description -n wpa_gui
@@ -252,6 +253,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun
 %systemd_reload
+
+%post -n wpa_gui
+%update_desktop_database_post
+
+%postun -n wpa_gui
+%update_desktop_database_postun
 
 %post	-n libeap -p /sbin/ldconfig
 %postun	-n libeap -p /sbin/ldconfig
