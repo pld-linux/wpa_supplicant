@@ -211,7 +211,7 @@ install -d $RPM_BUILD_ROOT{%{_mandir}/man{5,8},%{_bindir},%{_sbindir},%{_desktop
 	$RPM_BUILD_ROOT{%{systemdtmpfilesdir},%{systemdunitdir}}
 
 install -p wpa_supplicant/wpa_cli $RPM_BUILD_ROOT%{_sbindir}
-install -p wpa_supplicant/wpa_passphrase $RPM_BUILD_ROOT%{_sbindir}
+install -p wpa_supplicant/wpa_passphrase $RPM_BUILD_ROOT%{_bindir}
 install -p wpa_supplicant/wpa_supplicant $RPM_BUILD_ROOT%{_sbindir}
 
 cp -p wpa_supplicant/wpa_supplicant.conf $RPM_BUILD_ROOT%{_sysconfdir}
@@ -278,7 +278,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files utils
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_sbindir}/wpa_passphrase
+%attr(755,root,root) %{_bindir}/wpa_passphrase
 %{_mandir}/man8/wpa_passphrase.8*
 
 %if %{with gui}
