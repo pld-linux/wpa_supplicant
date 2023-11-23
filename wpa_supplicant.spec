@@ -103,6 +103,7 @@ Obsługiwane możliwości WPA/IEEE 802.11i:
 %package utils
 Summary:	wpa_supplicant utilities
 Summary(pl.UTF-8):	Narzędzia dla wpa_supplicant
+Group:		Networking
 
 %description utils
 wpa_supplicant utilities.
