@@ -6,17 +6,17 @@
 %bcond_without	dbus		# D-BUS control interface
 %bcond_without	gui		# GUI (wpa_gui) package
 %bcond_with	pcsc		# PC/SC support for smartcards
-%bcond_without	qt5		# use Qt 5 instead of Qt 4
+%bcond_without	qt6		# use Qt 6 instead of Qt 4
 
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
 Name:		wpa_supplicant
-Version:	2.11
+Version:	2.12
 Release:	1
 License:	BSD
 Group:		Networking
 Source0:	http://w1.fi/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	72a4a00eddb7a499a58113c3361ab094
+# Source0-md5:	3f1af56655ebca941d2035358331bbc9
 Source1:	%{name}.config
 Source2:	%{name}-wpa_gui.desktop
 Source3:	%{name}.tmpfiles
@@ -35,12 +35,12 @@ BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.647
 %if %{with gui}
-%if %{with qt5}
-BuildRequires:	Qt5Gui-devel >= 5
-BuildRequires:	Qt5Widgets-devel >= 5
-BuildRequires:	qt5-build >= 5
-BuildRequires:	qt5-linguist >= 5.13.0-3
-BuildRequires:	qt5-qmake >= 5
+%if %{with qt6}
+BuildRequires:	Qt6Gui-devel >= 6
+BuildRequires:	Qt6Widgets-devel >= 6
+BuildRequires:	qt6-build >= 6
+BuildRequires:	qt6-linguist
+BuildRequires:	qt6-qmake >= 6
 %else
 BuildRequires:	QtGui-devel >= 4
 BuildRequires:	qt4-build >= 4
@@ -55,7 +55,7 @@ Requires:	systemd-units >= 38
 Suggests:	%{name}-utils = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		qtver	%{?with_qt5:5}%{!?with_qt5:4}
+%define		qtver	%{?with_qt6:6}%{!?with_qt6:4}
 
 %description
 wpa_supplicant is a WPA Supplicant with support for WPA and WPA2 (IEEE
