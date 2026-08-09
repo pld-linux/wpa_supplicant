@@ -290,11 +290,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n libeap
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libeap.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libeap.so.0
+%{_libdir}/libeap.so.*.*.*
+%ghost %{_libdir}/libeap.so.0
 
 %files -n libeap-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libeap.so
+%{_libdir}/libeap.so
 %{_includedir}/eap_peer
 %{_pkgconfigdir}/libeap0.pc
