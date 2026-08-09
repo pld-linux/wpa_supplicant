@@ -6,7 +6,6 @@
 %bcond_without	dbus		# D-BUS control interface
 %bcond_without	gui		# GUI (wpa_gui) package
 %bcond_with	pcsc		# PC/SC support for smartcards
-%bcond_without	qt6		# use Qt 6 instead of Qt 4
 
 Summary:	Linux WPA/WPA2/RSN/IEEE 802.1X supplicant
 Summary(pl.UTF-8):	Suplikant WPA/WPA2/RSN/IEEE 802.1X dla Linuksa
@@ -35,18 +34,11 @@ BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.647
 %if %{with gui}
-%if %{with qt6}
 BuildRequires:	Qt6Gui-devel >= 6
 BuildRequires:	Qt6Widgets-devel >= 6
 BuildRequires:	qt6-build >= 6
 BuildRequires:	qt6-linguist
 BuildRequires:	qt6-qmake >= 6
-%else
-BuildRequires:	QtGui-devel >= 4
-BuildRequires:	qt4-build >= 4
-BuildRequires:	qt4-linguist >= 4
-BuildRequires:	qt4-qmake >= 4
-%endif
 %endif
 BuildRequires:	readline-devel
 BuildRequires:	sed >= 4.0
@@ -54,8 +46,6 @@ Requires:	rc-scripts >= 0.4.1.24
 Requires:	systemd-units >= 38
 Suggests:	%{name}-utils = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		qtver	%{?with_qt6:6}%{!?with_qt6:4}
 
 %description
 wpa_supplicant is a WPA Supplicant with support for WPA and WPA2 (IEEE
@@ -188,17 +178,17 @@ CFLAGS="%{rpmcppflags} %{rpmcflags}" \
 
 %if %{with gui}
 cd wpa_supplicant/wpa_gui-qt4
-qmake-qt%{qtver} -o Makefile wpa_gui.pro \
+qmake-qt6 -o Makefile wpa_gui.pro \
 	QMAKE_CXX="%{__cxx}" \
 	QMAKE_CXXFLAGS_RELEASE="%{rpmcxxflags}" \
 	QMAKE_LFLAGS_RELEASE="%{rpmldflags}"
 cd ../..
 %{__make} -C wpa_supplicant wpa_gui-qt4 \
 	V=1 \
-	QTDIR=%{_libdir}/qt%{qtver} \
-	QMAKE='qmake-qt%{qtver}' \
-	LRELEASE='%{_libdir}/qt%{qtver}/bin/lrelease' \
-	UIC=%{_bindir}/uic-qt%{qtver}
+	QTDIR=%{_libdir}/qt6 \
+	QMAKE='qmake-qt6' \
+	LRELEASE='%{_libdir}/qt6/bin/lrelease' \
+	UIC=%{_bindir}/uic-qt6
 %endif
 
 %{__make} -C src/eap_peer -f Makefile.libeap clean
